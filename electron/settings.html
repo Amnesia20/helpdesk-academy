@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:" />
+    <title>Settings</title>
+    <link rel="stylesheet" href="settings.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Settings</h1>
+        <p id="status" class="status"></p>
+      </header>
+
+      <section>
+        <h2>AI service</h2>
+        <p class="muted">The AI plays the callers and grades tickets. Pick one.</p>
+        <div class="options">
+          <label class="option"><input type="radio" name="provider" value="groq" /><span><b>Groq</b><small>Free. Needs a free key. Has per-minute limits, fine for one person or a small group.</small></span></label>
+          <label class="option"><input type="radio" name="provider" value="anthropic" /><span><b>Claude</b><small>Paid, best quality. About $0.30–$0.60 per completed ticket.</small></span></label>
+          <label class="option"><input type="radio" name="provider" value="openai" /><span><b>Ollama on this computer</b><small>Free and unlimited. Needs Ollama installed and a strong graphics card.</small></span></label>
+        </div>
+
+        <div class="fields" data-for="groq">
+          <label for="groqKey">Groq API key</label>
+          <input id="groqKey" type="password" autocomplete="off" spellcheck="false" placeholder="gsk_..." />
+          <p class="hint"><span id="groqSaved"></span> <a href="#" data-link="https://console.groq.com/keys">Get a free key</a> (sign up, then API Keys, then Create API Key).</p>
+        </div>
+        <div class="fields" data-for="anthropic">
+          <label for="anthropicKey">Claude API key</label>
+          <input id="anthropicKey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-..." />
+          <p class="hint"><span id="anthropicSaved"></span> <a href="#" data-link="https://console.anthropic.com/">Get a key</a> (needs prepaid credit; set a spending limit there).</p>
+        </div>
+        <div class="fields" data-for="openai">
+          <label for="ollamaUrl">Ollama address</label>
+          <input id="ollamaUrl" type="text" spellcheck="false" placeholder="http://localhost:11434/v1" />
+          <label for="ollamaModel">Model</label>
+          <input id="ollamaModel" type="text" spellcheck="false" placeholder="gpt-oss:20b" />
+          <p class="hint"><a href="#" data-link="https://ollama.com/download">Get Ollama</a>, then in a terminal: <code>ollama pull gpt-oss:20b</code></p>
+        </div>
+        <div class="row">
+          <button id="testBtn" type="button">Test connection</button>
+          <span id="testResult" class="result"></span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Classroom</h2>
+        <label for="classCode">Class code</label>
+        <input id="classCode" type="text" spellcheck="false" maxlength="40" />
+        <p class="hint">Students on other computers type this when they first sign in. It's only asked for when sharing with your network is on.</p>
+
+        <label for="instructorPassword">Instructor password</label>
+        <div class="row">
+          <input id="instructorPassword" type="text" spellcheck="false" maxlength="100" />
+          <button id="newPassword" type="button">New</button>
+        </div>
+        <p class="hint">For the Instructor dashboard (menu: HelpDesk Academy &gt; Instructor dashboard). At least 8 characters.</p>
+
+        <label class="check"><input id="share" type="checkbox" /> Let students on my network connect</label>
+        <p class="hint">Other computers on the same Wi-Fi can then use the app in a web browser while it's open here. The first time, Windows asks whether to allow HelpDesk Academy through the firewall: choose <b>Allow</b> for private networks.</p>
+        <div id="lan" class="lan"></div>
+      </section>
+
+      <p id="error" class="error"></p>
+      <footer>
+        <small id="dataDir" class="muted"></small>
+        <span class="spacer"></span>
+        <button id="cancelBtn" type="button">Cancel</button>
+        <button id="saveBtn" type="button" class="primary">Save and restart</button>
+      </footer>
+    </main>
+    <script src="settings.js"></script>
+  </body>
+</html>

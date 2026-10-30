@@ -1,0 +1,65 @@
+{
+  "name": "helpdesk-academy",
+  "productName": "HelpDesk Academy",
+  "version": "1.0.1",
+  "description": "Help desk training simulator: students work realistic support tickets against AI-played callers, from easy to hard.",
+  "author": "Levi M Wright",
+  "main": "electron/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node server.js --demo",
+    "app": "electron .",
+    "icon": "node scripts/make-icon.mjs",
+    "dist": "node scripts/make-icon.mjs && electron-builder --win"
+  },
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "express": "^4.22.3"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "electron": "^45.1.0",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.helpdeskacademy.app",
+    "productName": "HelpDesk Academy",
+    "copyright": "Copyright (c) 2026 Levi M Wright",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "package.json",
+      "server.js",
+      "src/**",
+      "labs/**",
+      "public/**",
+      "electron/**",
+      "build/icon.png"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "HelpDesk Academy",
+      "artifactName": "HelpDesk-Academy-Setup-${version}.exe",
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}
