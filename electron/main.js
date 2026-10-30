@@ -1,7 +1,8 @@
 // HelpDesk Academy desktop app (Electron). Runs the same server as the web
 // version inside the app, shows it in a window, and adds a Settings screen so
 // nobody has to edit .env files. Settings and data live in the user's profile:
-// %APPDATA%\HelpDesk Academy\settings.env and ...\data\
+// %APPDATA%\HelpDesk Academy\settings.env and ...\data\ (the Microsoft Store
+// version uses its package folder instead; see storeLocalState below).
 import { app, BrowserWindow, Menu, shell, dialog, ipcMain } from "electron";
 import path from "node:path";
 import fs from "node:fs";
@@ -14,9 +15,38 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
 const ICON = path.join(ROOT, "build", "icon.png");
 
+// Microsoft Store (MSIX) version: Windows quietly redirects files written to
+// %APPDATA% into the package's private storage, so Explorer would show the
+// wrong folder. Use the package's own LocalState folder instead: a real path,
+// and Windows removes it when the app is uninstalled.
+function storeLocalState() {
+  if (!process.windowsStore) return null;
+  // The app runs from ...\WindowsApps\<Name>_<Version>_<Arch>_<ResourceId>_<PublisherId>\app\
+  const fullName = path.basename(path.dirname(path.dirname(process.execPath)));
+  const parts = fullName.split("_");
+  if (parts.length < 5) return null;
+  const local = process.env.LOCALAPPDATA || path.join(os.homedir(), "AppData", "Local");
+  const dir = path.join(local, "Packages", `${parts[0]}_${parts.at(-1)}`, "LocalState");
+  return fs.existsSync(dir) ? dir : null;
+}
+
 // Same settings folder whether running from source or installed.
 app.setName("HelpDesk Academy");
-app.setPath("userData", path.join(app.getPath("appData"), "HelpDesk Academy"));
+const LEGACY_DIR = path.join(app.getPath("appData"), "HelpDesk Academy");
+const STORE_DIR = storeLocalState();
+app.setPath("userData", STORE_DIR ? path.join(STORE_DIR, "HelpDesk Academy") : LEGACY_DIR);
+
+// First run of the Store version on a PC that had the GitHub version:
+// bring over its settings and student progress.
+if (STORE_DIR && !fs.existsSync(path.join(app.getPath("userData"), "settings.env"))) {
+  try {
+    if (fs.existsSync(path.join(LEGACY_DIR, "settings.env"))) {
+      fs.mkdirSync(app.getPath("userData"), { recursive: true });
+      fs.copyFileSync(path.join(LEGACY_DIR, "settings.env"), path.join(app.getPath("userData"), "settings.env"));
+      if (fs.existsSync(path.join(LEGACY_DIR, "data"))) fs.cpSync(path.join(LEGACY_DIR, "data"), path.join(app.getPath("userData"), "data"), { recursive: true });
+    }
+  } catch {}
+}
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();

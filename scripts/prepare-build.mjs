@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 await import("./make-icon.mjs");
+await import("./make-appx-assets.mjs"); // Microsoft Store tile images (npm run dist:store)
 
 const license = fs.readFileSync(path.join(root, "LICENSE.md"), "utf8");
 if (/NAME NOT ADDED/.test(license)) throw new Error("LICENSE.md still has no copyright holder name.");

@@ -99,6 +99,15 @@ The installer appears at `dist\HelpDesk-Academy-Setup-<version>.exe` (about 120 
 
 **Try it without building:** `npm run app` starts the desktop app straight from the source code.
 
+### Microsoft Store package (MSIX)
+
+`npm run dist:store` builds `dist\HelpDesk-Academy-Store-<version>.msix` to upload in Partner Center. Microsoft signs it during certification, so Store users get no Windows warning.
+
+- It needs the free [Windows SDK](https://developer.microsoft.com/windows/downloads/windows-sdk/) for `makeappx.exe` (electron-builder's own copy doesn't start on recent Windows). `scripts/dist-store.mjs` finds the newest installed SDK automatically.
+- The `appx` section of `package.json` must hold the three values from Partner Center > Product management > Product identity: `identityName` (Package/Identity/Name), `publisher` (Package/Identity/Publisher) and `publisherDisplayName` (Package/Properties/PublisherDisplayName).
+- The Store tile images are generated from `build/icon.svg` into `build/appx/` by `scripts/make-appx-assets.mjs`.
+- The Store version keeps its settings and data in its package folder (`%LOCALAPPDATA%\Packages\<package>\LocalState\HelpDesk Academy`), which Windows deletes on uninstall. On first start it copies settings and progress from `%APPDATA%\HelpDesk Academy` if the GitHub version was used on that PC.
+
 ### Put it online from your PC (Tailscale Funnel)
 
 [Tailscale Funnel](https://tailscale.com/kb/1223/funnel) gives the app a free, permanent HTTPS address (like `https://your-pc.your-tailnet.ts.net`) without touching your router. Your PC must be on with the app running.

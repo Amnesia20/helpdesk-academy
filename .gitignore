@@ -4,3 +4,4 @@ dist/
 node_modules/
 *.log
 build/license.txt
+build/appx/

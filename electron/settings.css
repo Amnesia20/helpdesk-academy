@@ -43,4 +43,9 @@ button:disabled { opacity: .5; cursor: default; }
 .lan { font-family: Consolas, monospace; font-size: 13px; }
 .error { color: var(--bad); min-height: 18px; margin: 0; }
 footer { display: flex; gap: 8px; align-items: center; }
+/* Long folder paths and addresses wrap instead of widening the window
+   (the Store version's data path is especially long). */
+main > * { min-width: 0; }
+#dataDir { min-width: 0; overflow-wrap: anywhere; }
+.lan { overflow-wrap: anywhere; }
 .spacer { flex: 1; }
