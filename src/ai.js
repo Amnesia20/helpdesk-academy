@@ -216,8 +216,12 @@ export async function mentorReply(lab, attempt, question, hintNumber) {
     maxTokens: MAX_TOKENS.mentor,
   });
   if (!text) throw new AIError("Sam didn't come back with an answer. Try again.", 502);
-  return text;
+  return tidyParagraphs(text);
 }
+
+// Some models glue two paragraphs together with no space ("format.Next, ...").
+// Put the space back after a sentence end that runs straight into a new word.
+export const tidyParagraphs = (text) => text.replace(/([a-z][.!?])(?=[A-Z][a-z])/g, "$1 ");
 
 // ---------------------------------------------------------------- grader ----
 export async function gradeAttempt(lab, attempt, checks) {

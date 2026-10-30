@@ -283,6 +283,8 @@ label { font-weight: 600; font-size: 13px; color: var(--ink-2); display: block; 
 
 /* tools */
 .tabs { display: flex; gap: 2px; padding: 8px 10px 0; border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 2; }
+/* Leave room for the sticky tab bar when a user's details scroll into view. */
+#user-detail { scroll-margin-top: 60px; }
 .tab { border: none; background: transparent; padding: 9px 12px; font-weight: 600; font-size: 14px; color: var(--muted); border-bottom: 2px solid transparent; cursor: pointer; }
 .tab:hover { color: var(--ink); }
 .tab.active { color: var(--brand); border-bottom-color: var(--brand); }
