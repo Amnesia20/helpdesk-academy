@@ -4,6 +4,8 @@ A help desk training simulator. Students sign in from their own computers, pick 
 
 All tickets take place at **Brightline Logistics**, a fictional 800-person company. Every person, phone number, and address in it is made up.
 
+**Download the Windows app:** <https://amnesia20.github.io/helpdesk-academy/>
+
 ## What students do
 
 1. **Pick a ticket** from the queue: 16 labs, Easy → Medium → Hard.
@@ -182,7 +184,7 @@ The Claude Opus 5.5 requests use Anthropic's server-side refusal fallback (`fall
 
 ## Data and privacy
 
-Everything is stored in `data/db.json` on the server computer: usernames, display names, hashed PINs, and every ticket's conversation and grade. Conversations are sent to the AI service you configured (Anthropic or Groq) to generate replies and grades. Tell students to use made-up details only: no real passwords or personal information.
+Everything is stored in `data/db.json` on the server computer: usernames, display names, hashed PINs, and every ticket's conversation and grade. Conversations are sent to the AI service you configured (Anthropic or Groq) to generate replies and grades. Tell students to use made-up details only: no real passwords or personal information. The full [privacy notice](https://amnesia20.github.io/helpdesk-academy/privacy.html) is on the website (source in `docs/`).
 
 To start a new term, stop the server and delete `data/db.json` (back it up first if you want the old results).
 
@@ -217,6 +219,7 @@ src/console.js     Simulated admin console actions
 src/db.js          JSON-file storage
 labs/              Labs, company directory, knowledge base
 public/            Student app (index.html, app.js) and instructor dashboard
+docs/              The website (GitHub Pages): download page and privacy notice
 ```
 
 ## License

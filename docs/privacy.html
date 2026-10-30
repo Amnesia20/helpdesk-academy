@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Notice</title>
+  <meta name="description" content="What HelpDesk Academy stores, where it stores it, and what is sent to the AI service you choose.">
+  <meta name="theme-color" content="#0e1a2b">
+  <link rel="icon" type="image/png" href="img/icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/icon.png" alt="" width="30" height="30">HelpDesk Academy</a>
+    <nav class="nav" aria-label="Site">
+      <a href="./#how">How it works</a>
+      <a href="./#labs">Labs</a>
+      <a href="./#install">Install</a>
+      <a href="./#instructors">Instructors</a>
+    </nav>
+    <a class="btn btn-primary" href="./#install">Download</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <article class="doc">
+    <h1>Privacy notice</h1>
+    <p class="updated">Last updated October 30, 2026</p>
+
+    <div class="card summary">
+      <strong>The short version</strong>
+      <ul>
+        <li>HelpDesk Academy doesn't collect anything about you. There are no accounts with us, no analytics, no ads, and no tracking.</li>
+        <li>The app saves its data on the computer that runs it.</li>
+        <li>When you work a ticket, the ticket's conversation is sent to the AI service you chose so it can play the caller and grade your work. Your name and username are not sent.</li>
+      </ul>
+    </div>
+
+    <h2>Who this covers</h2>
+    <p>HelpDesk Academy is made by Levi M Wright. This notice covers the HelpDesk Academy desktop app, its source code on GitHub, and this website.</p>
+
+    <h2>What the app stores, and where</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>What</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Student profiles: username, display name, and PIN. The PIN is stored as a salted hash, never as the PIN itself.</td><td>To sign in and keep each student's progress.</td></tr>
+          <tr><td>Tickets: the conversation, admin console actions, hints used, work notes, resolution notes, and the grade.</td><td>To grade the ticket, show progress, and let the instructor review it.</td></tr>
+          <tr><td>Settings: the AI service, its API key, the class code, and the instructor password.</td><td>To run the app.</td></tr>
+          <tr><td>A log file.</td><td>To troubleshoot problems.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>All of it stays on the computer that runs HelpDesk Academy:</p>
+    <ul>
+      <li><strong>Desktop app:</strong> the <code>%APPDATA%\HelpDesk Academy</code> folder in your Windows profile.</li>
+      <li><strong>Run from the source code:</strong> the <code>data</code> folder next to the code, or the folder set in <code>DATA_DIR</code>.</li>
+    </ul>
+    <p>None of this is sent to me. I can't see it, and I can't recover or delete it for you.</p>
+
+    <h2>What leaves your computer</h2>
+    <h3>The AI service you choose</h3>
+    <p>Each time a caller replies, the Senior Tech gives a hint, or a ticket is graded, the app sends that ticket's conversation, your notes and console actions, and the lab's hidden details to the AI service you picked in Settings:</p>
+    <ul>
+      <li><strong>Groq:</strong> sent over the internet to Groq, Inc. Their <a href="https://groq.com/privacy-policy/">privacy policy</a> applies.</li>
+      <li><strong>Claude:</strong> sent over the internet to Anthropic. Their <a href="https://www.anthropic.com/legal/privacy">privacy policy</a> applies.</li>
+      <li><strong>Ollama:</strong> stays on your own computer.</li>
+    </ul>
+    <p>Usernames, display names, PINs and passwords are not part of what's sent. Anything a student types into the ticket chat or notes is.</p>
+    <h3>Checking your key</h3>
+    <p>When you click <strong>Test connection</strong> in Settings, the app contacts the service you picked, using your key, to check that it works.</p>
+    <h3>Links</h3>
+    <p>Links in the app, like "Get a free key", open in your web browser.</p>
+    <h3>Nothing else</h3>
+    <p>The app doesn't send update checks, crash reports, usage statistics, or anything else.</p>
+
+    <h2>Keep tickets fictional</h2>
+    <p>Every ticket takes place at a made-up company. Use made-up details when you answer. Never type a real password, real personal information, or anything you wouldn't want an AI service to process.</p>
+
+    <h2>If a school or instructor runs it</h2>
+    <p>If your instructor hosts HelpDesk Academy, your profile and tickets are stored on their computer or server, and they decide how long to keep them. Instructors can see every student's tickets, including conversations and notes. Ask your instructor or school about how they handle this data.</p>
+
+    <h2>Students and children</h2>
+    <p>HelpDesk Academy is meant for people learning IT support, including in schools. It doesn't collect personal information for me. Schools using it with younger students should use made-up usernames, and check that the AI service they choose is allowed under their own rules and that service's terms.</p>
+
+    <h2>Deleting data</h2>
+    <ul>
+      <li><strong>One student:</strong> the instructor can delete a student from the instructor dashboard.</li>
+      <li><strong>Desktop app:</strong> uninstalling keeps your progress so a reinstall doesn't lose it. To remove everything, uninstall the app, then delete the <code>%APPDATA%\HelpDesk Academy</code> folder.</li>
+      <li><strong>Run from the source code:</strong> stop the server and delete <code>data/db.json</code>.</li>
+      <li><strong>The AI service:</strong> what it keeps is covered by that service's own policy.</li>
+    </ul>
+
+    <h2>This website</h2>
+    <p>This website is a static page hosted on GitHub Pages. It uses no cookies, no analytics, no third-party scripts, and no outside fonts. GitHub may log visitors' IP addresses for security; see the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a>. Downloads come from GitHub Releases.</p>
+
+    <h2>Changes</h2>
+    <p>If this notice changes, the new version will be posted on this page with a new date. Earlier versions are in the project's history on <a href="https://github.com/Amnesia20/helpdesk-academy/commits/main/docs/privacy.html">GitHub</a>.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about privacy? Open an issue on <a href="https://github.com/Amnesia20/helpdesk-academy/issues">GitHub</a>. Issues are public, so don't include personal information.</p>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 Levi M Wright</span>
+    <nav aria-label="Footer">
+      <a href="./">Home</a>
+      <a href="https://github.com/Amnesia20/helpdesk-academy/blob/main/LICENSE.md">License</a>
+      <a href="https://github.com/Amnesia20/helpdesk-academy">Source code</a>
+      <a href="https://github.com/Amnesia20/helpdesk-academy/issues">Report a problem</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HelpDesk Academy</title>
+  <meta name="description" content="A free help desk training simulator for Windows. Work realistic support tickets with AI callers, a simulated admin console, and instant grading. Free for students, schools, and personal practice.">
+  <meta name="theme-color" content="#0e1a2b">
+  <link rel="icon" type="image/png" href="img/icon.png">
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="HelpDesk Academy: help desk training simulator">
+  <meta property="og:description" content="Work realistic support tickets with AI callers, a simulated admin console, and instant grading. Free for noncommercial use.">
+  <meta property="og:url" content="https://amnesia20.github.io/helpdesk-academy/">
+  <meta property="og:image" content="https://amnesia20.github.io/helpdesk-academy/img/ticket.png">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="img/icon.png" alt="" width="30" height="30">HelpDesk Academy</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#how">How it works</a>
+      <a href="#labs">Labs</a>
+      <a href="#install">Install</a>
+      <a href="#instructors">Instructors</a>
+      <a href="https://github.com/Amnesia20/helpdesk-academy">Source</a>
+    </nav>
+    <a class="btn btn-primary" href="#install">Download</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Free help desk training simulator</span>
+      <h1>Work real help desk tickets before your first shift.</h1>
+      <p class="lede">An AI plays the caller. You ask the questions, use the admin console, follow company policy, and close the ticket. Then an AI team lead grades your work out of 100 and tells you what to do better next time.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/Amnesia20/helpdesk-academy/releases/download/v1.0.1/HelpDesk-Academy-Setup-1.0.1.exe">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          Download for Windows
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/Amnesia20/helpdesk-academy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 7-5 5 5 5"/><path d="m16 7 5 5-5 5"/></svg>
+          View the source
+        </a>
+      </div>
+      <p class="meta">Version 1.0.1 &middot; 118 MB &middot; Windows 10 and 11 &middot; Free for personal practice, schools and nonprofits</p>
+      <div class="shot">
+        <div class="frame">
+          <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+          <img src="img/ticket.png" width="1424" height="835" alt="A ticket in progress: the chat with the caller in the middle, ticket details on the left, and the Admin Center showing the caller's locked account on the right.">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">How it works</span>
+        <h2>Every ticket is a live call.</h2>
+        <p>The tickets take place at Brightline Logistics, a made-up 800-person company. Every person, phone number and address in it is fictional.</p>
+      </div>
+      <ol class="steps">
+        <li class="card">
+          <h3>Pick a ticket</h3>
+          <p>16 tickets from Easy to Hard: lockouts, Outlook, Wi-Fi, printers, MFA, BitLocker, phishing, VIPs, and more.</p>
+        </li>
+        <li class="card">
+          <h3>Talk to the caller</h3>
+          <p>Each caller has a personality, a mood, and a screen you can't see. They only give clues when you ask the right questions.</p>
+        </li>
+        <li class="card">
+          <h3>Use the tools</h3>
+          <p>An Admin Center to unlock accounts, reset passwords and MFA, and manage groups. A policy knowledge base. A Senior Tech for hints.</p>
+        </li>
+        <li class="card">
+          <h3>Close it and get graded</h3>
+          <p>Write your notes, close it as Resolved or Escalated, and get a score with what went well and what to improve.</p>
+        </li>
+      </ol>
+      <div class="gallery">
+        <figure>
+          <img src="img/queue.png" width="1424" height="835" loading="lazy" alt="The ticket queue, with Easy tickets shown as cards, plus rank, XP and labs completed at the top.">
+          <figcaption>The queue: three difficulty tiers, XP and ranks from Trainee to Help Desk Lead.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/results.png" width="1424" height="835" loading="lazy" alt="A graded ticket scoring 90 out of 100, with a score breakdown by category and lists of what went well and what to improve.">
+          <figcaption>Every closed ticket is graded in five areas, with specific feedback.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="grading">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Grading</span>
+        <h2>Graded the way a team lead would.</h2>
+        <p>Fixing the problem isn't enough. You're scored on how you got there, whether you followed policy, and whether the next tech could act on your notes.</p>
+      </div>
+      <div class="grading">
+        <div class="card scores">
+          <div class="score">
+            <div class="score-top">Troubleshooting <span>25 pts</span></div>
+            <div class="meter"><i style="width:100%"></i></div>
+            <p>Logical diagnosis, and evidence before changes.</p>
+          </div>
+          <div class="score">
+            <div class="score-top">Resolution <span>25 pts</span></div>
+            <div class="meter"><i style="width:100%"></i></div>
+            <p>Fixed the root cause or escalated to the right team, and confirmed with the caller.</p>
+          </div>
+          <div class="score">
+            <div class="score-top">Security &amp; policy <span>20 pts</span></div>
+            <div class="meter"><i style="width:80%"></i></div>
+            <p>Verified identity first, least privilege, protected secrets.</p>
+          </div>
+          <div class="score">
+            <div class="score-top">Communication <span>15 pts</span></div>
+            <div class="meter"><i style="width:60%"></i></div>
+            <p>Empathy, plain language, setting expectations.</p>
+          </div>
+          <div class="score">
+            <div class="score-top">Documentation <span>15 pts</span></div>
+            <div class="meter"><i style="width:60%"></i></div>
+            <p>Notes the next tech could act on.</p>
+          </div>
+        </div>
+        <div>
+          <div class="card callout">
+            <h3>Some mistakes end the call</h3>
+            <p>A <strong>critical failure</strong>, like resetting the CFO's password for a caller you never verified, caps the score at 40, no matter how friendly you were.</p>
+          </div>
+          <div class="card callout">
+            <h3>Hints cost points</h3>
+            <p>The Senior Tech gives nudges, not answers: up to 3 per ticket, <strong>3 points each</strong>.</p>
+          </div>
+          <div class="card callout">
+            <h3>XP and ranks</h3>
+            <p>XP is your best score times the difficulty (1&times;, 2&times; or 3&times;). Ranks go from <strong>Trainee</strong> to <strong>Help Desk Lead</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="labs">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">The labs</span>
+        <h2>16 tickets you'll actually see on the job.</h2>
+        <p>Start with one clear problem and a friendly caller. Finish with social engineering, compromised accounts, and executives who need it fixed right now.</p>
+      </div>
+      <div class="labs">
+        <div class="card tier easy">
+          <div class="tier-head"><h3>Easy</h3><span class="pill">Tier 1 &middot; 1&times; XP</span></div>
+          <p>One clear problem and a cooperative caller.</p>
+          <ul>
+            <li><strong>Locked Out on Monday Morning</strong><span>Picking the right account, verification, finding why it locked</span></li>
+            <li><strong>Where Did My Email Go?</strong><span>Scoping questions, Outlook "Work Offline"</span></li>
+            <li><strong>The Wi-Fi Disappeared</strong><span>Calm, simple guidance; airplane mode</span></li>
+            <li><strong>Printing to Nowhere</strong><span>Default printers in Windows 11, stuck queues</span></li>
+            <li><strong>Second Monitor Went Black</strong><span>Ruling out cables, Win+P display modes</span></li>
+          </ul>
+        </div>
+        <div class="card tier medium">
+          <div class="tier-head"><h3>Medium</h3><span class="pill">Tier 1.5 &middot; 2&times; XP</span></div>
+          <p>A twist, a policy to follow, or steps in the right order.</p>
+          <ul>
+            <li><strong>New Hire Can't Open the Finance Share</strong><span>Approved requests only, least privilege</span></li>
+            <li><strong>Some Websites Work, Some Don't</strong><span>ipconfig and nslookup, a wrong DNS server</span></li>
+            <li><strong>New Phone, No Way to Sign In</strong><span>Stronger verification for MFA resets</span></li>
+            <li><strong>My Computer Is SO Slow</strong><span>Evidence-based diagnosis, consent before deleting</span></li>
+            <li><strong>Blue Screen Wants a Recovery Key</strong><span>BitLocker: verify first, match the Key ID</span></li>
+            <li><strong>Excel Crashes the Moment It Opens</strong><span>Safe mode, a bad add-in, spotting a wider issue</span></li>
+          </ul>
+        </div>
+        <div class="card tier hard">
+          <div class="tier-head"><h3>Hard</h3><span class="pill">Tier 2 &middot; 3&times; XP</span></div>
+          <p>Pressure, security risks, and knowing when to escalate.</p>
+          <ul>
+            <li><strong>Expired Password, Working From Home</strong><span>VPN, cached credentials, the "change at next logon" trap</span></li>
+            <li><strong>Coworkers Got Weird Emails From Me</strong><span>Compromised account: contain it, then escalate</span></li>
+            <li><strong>Urgent Call From the CFO</strong><span>Social engineering: verify, refuse, report</span></li>
+            <li><strong>No Network at the New Desk</strong><span>Physical-layer isolation, a clear escalation</span></li>
+            <li><strong>Boardroom in 10 Minutes</strong><span>VIP pressure, three problems in a row</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Install</span>
+        <h2>Up and running in about five minutes.</h2>
+        <p>No admin rights needed. It installs just for your Windows account.</p>
+      </div>
+      <div class="install">
+        <ol>
+          <li>
+            <h3>Download the installer</h3>
+            <p><a href="https://github.com/Amnesia20/helpdesk-academy/releases/download/v1.0.1/HelpDesk-Academy-Setup-1.0.1.exe">HelpDesk-Academy-Setup-1.0.1.exe</a> (118 MB) from GitHub.</p>
+          </li>
+          <li>
+            <h3>Run it</h3>
+            <p>Windows may show <strong>"Windows protected your PC"</strong> because the app isn't code-signed yet. Click <strong>More info</strong>, then <strong>Run anyway</strong>. Accept the license, pick a folder, and finish.</p>
+          </li>
+          <li>
+            <h3>Connect an AI service</h3>
+            <p>Settings opens the first time you start the app. Pick one, click <strong>Test connection</strong>, then <strong>Save and restart</strong>.</p>
+            <div class="choices">
+              <div class="choice"><strong>Groq <span class="tag">Free</span></strong><span>Sign up at <a href="https://console.groq.com/keys">console.groq.com</a>, create an API key, and paste it in. Good for one person or a few students at a time.</span></div>
+              <div class="choice"><strong>Claude <span class="tag">Paid</span></strong><span>The most natural callers and grading. Needs prepaid credit at <a href="https://console.anthropic.com/">console.anthropic.com</a>.</span></div>
+              <div class="choice"><strong>Ollama <span class="tag">Free, offline</span></strong><span>Runs the AI on your own computer. Needs a strong graphics card.</span></div>
+            </div>
+          </li>
+          <li>
+            <h3>Pick a ticket</h3>
+            <p>Choose a username and a 4 to 8 digit PIN to create your profile, then start with an Easy ticket. No AI key yet? The app still opens in demo mode so you can look around.</p>
+          </li>
+        </ol>
+        <div>
+          <div class="card side">
+            <h3>Before you start</h3>
+            <ul>
+              <li>Windows 10 or 11, 64-bit.</li>
+              <li>An internet connection for Groq or Claude.</li>
+              <li>Use made-up details in tickets. Never type real passwords or personal information.</li>
+            </ul>
+            <a class="btn btn-primary" href="https://github.com/Amnesia20/helpdesk-academy/releases/download/v1.0.1/HelpDesk-Academy-Setup-1.0.1.exe">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+              Download for Windows
+            </a>
+          </div>
+          <div class="card side">
+            <h3>Check your download (optional)</h3>
+            <p>The SHA-256 checksum of the 1.0.1 installer:</p>
+            <code class="hash">03763e74709fe73fd748c2a8855debeaaf0463af03f268927ce9d57df7d2fcee</code>
+            <p>Every version is listed on the <a href="https://github.com/Amnesia20/helpdesk-academy/releases">releases page</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="instructors">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">For instructors</span>
+        <h2>Run it for a whole class.</h2>
+        <p>One computer can host the class. Students join from a web browser. Nothing to install on their side.</p>
+      </div>
+      <div class="features">
+        <div class="card feature">
+          <h3>Share it on your network</h3>
+          <p>Turn on <strong>Let students on my network connect</strong> in Settings. Students on the same Wi-Fi open the address in a browser and enter your class code.</p>
+        </div>
+        <div class="card feature">
+          <h3>See everyone's progress</h3>
+          <p>The instructor dashboard shows each student's rank, scores, and current ticket, plus class averages by skill so you know what to teach next.</p>
+        </div>
+        <div class="card feature">
+          <h3>Review every attempt</h3>
+          <p>Read the full timeline of any ticket: the conversation, every console action, hints, notes, and the grade. Export all grades to CSV.</p>
+        </div>
+        <div class="card feature">
+          <h3>Host it online or write your own labs</h3>
+          <p>Run it as a server on your PC or a free cloud machine, and add your own tickets by copying an existing lab. See the <a href="https://github.com/Amnesia20/helpdesk-academy#readme">setup guide</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap split">
+      <div class="card">
+        <span class="kicker">Privacy</span>
+        <h2>Your data stays on your computer.</h2>
+        <ul>
+          <li>No accounts with us, no tracking, no ads.</li>
+          <li>Progress and settings are saved on the computer that runs the app.</li>
+          <li>Ticket conversations go only to the AI service you choose, to write the caller's replies and the grade.</li>
+        </ul>
+        <a class="more" href="privacy.html">Read the privacy notice</a>
+      </div>
+      <div class="card">
+        <span class="kicker">License</span>
+        <h2>Free to use. Not for sale.</h2>
+        <p>Anyone can use, change and share HelpDesk Academy for free for noncommercial purposes: personal practice, schools, charities, government, and research.</p>
+        <p>Selling it, or using it for a commercial purpose, needs written permission from the copyright holder.</p>
+        <a class="more" href="https://github.com/Amnesia20/helpdesk-academy/blob/main/LICENSE.md">PolyForm Noncommercial License 1.0.0</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker">Questions</span>
+        <h2>Good to know.</h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Is it really free?</summary>
+          <p>Yes. The app is free, and Groq's free AI tier is enough for one person or a few students at a time. If it gets busy, the app tells you how long to wait. Claude costs a few cents to about 60 cents per ticket, depending on the model.</p>
+        </details>
+        <details>
+          <summary>Why does Windows warn me when I install it?</summary>
+          <p>Windows warns about apps that aren't signed with a paid code-signing certificate. The installer is built straight from the public source code, and you can compare its checksum with the one above. Click More info, then Run anyway.</p>
+        </details>
+        <details>
+          <summary>Does it work on Mac or Linux?</summary>
+          <p>The installer is Windows only for now. On Mac or Linux you can run it from the source code with Node.js. The <a href="https://github.com/Amnesia20/helpdesk-academy#readme">setup guide</a> shows how.</p>
+        </details>
+        <details>
+          <summary>Is anything real in the tickets?</summary>
+          <p>No. Brightline Logistics and everyone in it are made up. Use made-up details when you answer too, and never type a real password.</p>
+        </details>
+        <details>
+          <summary>Where is my progress saved? Will I lose it if I update?</summary>
+          <p>In your Windows profile, under <code>%APPDATA%\HelpDesk Academy</code>. Installing a newer version, or uninstalling, keeps it.</p>
+        </details>
+        <details>
+          <summary>I found a bug or have an idea.</summary>
+          <p>Open an issue on <a href="https://github.com/Amnesia20/helpdesk-academy/issues">GitHub</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Ready to take your first call?</h2>
+      <p>Download HelpDesk Academy, connect a free AI key, and start with Locked Out on Monday Morning.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://github.com/Amnesia20/helpdesk-academy/releases/download/v1.0.1/HelpDesk-Academy-Setup-1.0.1.exe">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          Download for Windows
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/Amnesia20/helpdesk-academy">View the source</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 Levi M Wright</span>
+    <nav aria-label="Footer">
+      <a href="privacy.html">Privacy</a>
+      <a href="https://github.com/Amnesia20/helpdesk-academy/blob/main/LICENSE.md">License</a>
+      <a href="https://github.com/Amnesia20/helpdesk-academy">Source code</a>
+      <a href="https://github.com/Amnesia20/helpdesk-academy/issues">Report a problem</a>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
