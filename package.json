@@ -12,7 +12,8 @@
     "app": "electron .",
     "icon": "node scripts/make-icon.mjs",
     "dist": "node scripts/prepare-build.mjs && electron-builder --win",
-    "dist:store": "node scripts/prepare-build.mjs && node scripts/dist-store.mjs"
+    "dist:store": "node scripts/prepare-build.mjs && node scripts/dist-store.mjs",
+    "site": "node scripts/update-site.mjs"
   },
   "license": "PolyForm-Noncommercial-1.0.0",
   "dependencies": {

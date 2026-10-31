@@ -213,6 +213,60 @@ Labs live in `labs/easy.js`, `labs/medium.js`, and `labs/hard.js`. Copy an exist
 
 The fictional company directory (people, groups, devices) is in `labs/directory.js`, and the knowledge base is in `labs/kb.js`. Restart the server after editing.
 
+## Releasing a new version
+
+Every version goes out in three places: GitHub Releases (the installer), the website, and the Microsoft Store. The commands use PowerShell in this folder and the [GitHub CLI](https://cli.github.com/) (`gh`).
+
+1. **Bump the version.** Use the next number: `1.0.3` for fixes, `1.1.0` for new labs or features. The Store refuses a package whose version isn't higher than the last one.
+
+   ```powershell
+   npm version 1.0.3 --no-git-tag-version
+   ```
+
+2. **Try it.** `npm run app`, then work a ticket or two.
+
+3. **Build both packages.** This makes `dist\HelpDesk-Academy-Setup-1.0.3.exe` (GitHub) and `dist\HelpDesk-Academy-Store-1.0.3.msix` (Store).
+
+   ```powershell
+   npm run dist
+   npm run dist:store
+   ```
+
+4. **Write the release notes** in `release-notes.md`: update "What's new", the version numbers, and the SHA-256 checksum at the bottom. This prints the checksum:
+
+   ```powershell
+   (Get-FileHash dist\HelpDesk-Academy-Setup-1.0.3.exe).Hash.ToLower()
+   ```
+
+5. **Commit and push.** Check `git status` first so nothing unexpected goes in.
+
+   ```powershell
+   git status
+   git add -A
+   git commit -m "Version 1.0.3"
+   git push
+   ```
+
+6. **Publish the GitHub release.**
+
+   ```powershell
+   gh release create v1.0.3 dist\HelpDesk-Academy-Setup-1.0.3.exe --title "HelpDesk Academy 1.0.3" --notes-file release-notes.md
+   ```
+
+7. **Update the website.** `npm run site` writes the new version, download links, file size and checksum into `docs/index.html`. Do this after step 6 so the site never links to a release that doesn't exist yet. The site updates about a minute after the push.
+
+   ```powershell
+   npm run site
+   git commit -am "Website: version 1.0.3"
+   git push
+   ```
+
+8. **Submit to the Microsoft Store.** In Partner Center, open HelpDesk Academy and choose **Start update**. Then:
+   - **Packages:** upload the new `.msix` and remove the old one.
+   - **Store listings > English:** update **What's new in this version** (and the screenshots if the screens changed). Keep `store/listing.md` in sync.
+   - **Submission options > Notes for certification:** the testers need a working AI key, and the last one was deleted. Create a new Groq key called "Microsoft review" at [console.groq.com/keys](https://console.groq.com/keys) and paste it in place of the old key.
+   - **Submit.** Review usually takes one to three days. Store users get the update automatically. Delete the "Microsoft review" key once it's approved.
+
 ## Project layout
 
 ```
@@ -222,7 +276,9 @@ src/openai-compat.js  Groq / OpenAI-compatible client with model rotation
 deploy/oracle/     Free cloud hosting: setup.sh (server), upload.ps1 (your PC), guide
 deploy/windows/    Auto-start at login: install-autostart.ps1, run-server.ps1, stop-server.ps1
 electron/          Desktop app: main.js (window, menus, embedded server), Settings window
-build/, scripts/   App icon (icon.svg -> icon.png via scripts/make-icon.mjs)
+build/, scripts/   App icon (icon.svg -> icon.png via scripts/make-icon.mjs), build and release helpers
+store/             Microsoft Store listing text, screenshots and logos
+release-notes.md   Notes for the latest GitHub release (edit for each new version)
 src/prompts.js     The prompts for each AI role
 src/console.js     Simulated admin console actions
 src/db.js          JSON-file storage
