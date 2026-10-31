@@ -226,7 +226,7 @@ section + section { border-top: 1px solid var(--line); }
 .install ol p { margin-top: 6px; color: var(--muted); }
 .choices { display: grid; gap: 10px; margin-top: 14px; }
 .choice { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
-.choice strong { display: block; }
+.choice > strong { display: block; }
 .choice > span { display: block; color: var(--muted); font-size: 0.92rem; margin-top: 2px; }
 .tag { display: inline-block; margin-left: 6px; font-size: 0.75rem; font-weight: 700; padding: 1px 8px; border-radius: 99px; background: var(--brand-soft); color: var(--brand); vertical-align: 1px; }
 :root[data-theme="dark"] .tag { color: var(--link); }

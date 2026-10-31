@@ -4,7 +4,7 @@ A help desk training simulator. Students sign in from their own computers, pick 
 
 All tickets take place at **Brightline Logistics**, a fictional 800-person company. Every person, phone number, and address in it is made up.
 
-**Download the Windows app:** <https://amnesia20.github.io/helpdesk-academy/>
+**Get the Windows app:** [Microsoft Store](https://apps.microsoft.com/detail/9PL29XFJ4FH8) (no warning, updates itself) or the installer on the [website](https://amnesia20.github.io/helpdesk-academy/)
 
 ## What students do
 
