@@ -49,6 +49,8 @@ Free for personal practice, schools, nonprofits and research. Not for resale.
 
 ## What's new in this version (max 1,500)
 
+Delete the previous version's text in Partner Center first, then paste this. It replaces the old text; it isn't added to it.
+
 ```
 • Hand in your work: results now show your name and the date, and Save as PDF saves the full report, including the call, for an assignment.
 • Settings is now a button in the top bar of every screen.
@@ -62,6 +64,8 @@ Free for personal practice, schools, nonprofits and research. Not for resale.
 (1.0.2, the first Store release, said: "First Microsoft Store release" plus its fixes.)
 
 ## Product features (up to 20, max 200 characters each)
+
+Put each line in its own box (14 boxes). Partner Center removes line breaks, so pasting two lines into one box joins them into one run-on feature.
 
 ```
 16 realistic help desk tickets, from easy to hard

@@ -312,7 +312,7 @@ Every version goes out in three places: GitHub Releases (the Windows and Linux d
 
 8. **Submit to the Microsoft Store** (skip it when nothing changed for Windows users). In Partner Center, open HelpDesk Academy and choose **Start update**. Then:
    - **Packages:** upload the new `.msix` and remove the old one.
-   - **Store listings > English:** update **What's new in this version** (and the screenshots if the screens changed). Keep `store/listing.md` in sync.
+   - **Store listings > English:** replace the text in **What's new in this version** (delete the old version's text first, don't add to it), and update the screenshots if the screens changed. Each product feature goes in its own box. Keep `store/listing.md` in sync.
    - **Submission options > Notes for certification:** the testers need a working AI key, and the last one was deleted. Create a new Groq key called "Microsoft review" at [console.groq.com/keys](https://console.groq.com/keys) and paste it in place of the old key.
    - **Submit.** Review usually takes one to three days. Store users get the update automatically. Delete the "Microsoft review" key once it's approved.
 
