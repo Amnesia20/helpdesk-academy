@@ -26,6 +26,7 @@ All tickets take place at **Brightline Logistics**, a fictional 800-person compa
    | Documentation | 15 | Notes the next tech could act on |
 
    A **critical failure** (for example resetting the CFO's password for an unverified caller) caps the score at 40. Each hint used subtracts 3 points (max 15).
+6. **Hand it in** (optional): the results page shows the student's name and the date, and **Save as PDF** saves the whole report with the full call, ready to attach to an assignment. Students can practice at home with their own free AI key and send the PDF or a screenshot to their teacher.
 
 XP = best score × difficulty (1×/2×/3×). Ranks go Trainee → Tier 1 Technician → Senior Tier 1 → Tier 2 Technician → Help Desk Lead.
 
@@ -77,7 +78,7 @@ Without an AI key it still starts, in **demo mode**: you can click through every
 
 ### Desktop app (Windows installer)
 
-HelpDesk Academy also comes as a normal Windows program: an installer, Start-menu and desktop shortcuts, its own window, and a **Settings** screen for the AI key, class code, and instructor password. The person installing it doesn't need Node.js or any files to edit.
+HelpDesk Academy also comes as a normal Windows program: an installer, a Start-menu shortcut (and a desktop one if you tick the box on the installer's last page or in Settings), its own window, and a **Settings** screen for the AI key, class code, and instructor password. The person installing it doesn't need Node.js or any files to edit.
 
 **Build the installer** (on Windows, from this folder):
 
@@ -88,11 +89,14 @@ npm run dist
 
 The installer appears at `dist\HelpDesk-Academy-Setup-<version>.exe` (about 120 MB, version from `package.json`). Give that one file to anyone who should have the app. Running a newer installer over an existing install updates it and keeps its settings.
 
+**Updates:** from version 1.0.3 the installed app updates itself (`electron/updater.js`, using electron-updater). Shortly after it starts, and twice a day while open, it checks the latest GitHub release for `latest.yml`, downloads a newer installer in the background, and asks to restart (**Later** installs it when the app closes). **Help > Check for updates…** checks right away. The Microsoft Store version and `npm run app` don't use this.
+
 **Installing:** run the installer and pick a folder. It installs just for that Windows user, so it doesn't need admin rights. The installer isn't code-signed, so Windows may show **"Windows protected your PC"**: click **More info**, then **Run anyway**. (Removing that warning requires buying a code-signing certificate.)
 
 **First launch:** Settings opens automatically. Pick an AI service (free Groq key, paid Claude key, or Ollama on the same computer), click **Test connection**, then **Save and restart**.
 
 **In the app:**
+- **Settings** button in the top bar (and on the sign-in page), shown only in the app's own window, not to students joining from a browser.
 - **Menu > HelpDesk Academy:** Student practice (Ctrl+1), Instructor dashboard (Ctrl+2), Settings (Ctrl+,), Let students connect, Open data folder.
 - By default only the person at that computer can use it, and no class code is asked for. Turn on **Let students on my network connect** in Settings to let other computers on the same Wi-Fi join in a browser. They'll need the class code. Windows asks once about the firewall: choose Allow.
 - Settings, student progress and a log file live in `%APPDATA%\HelpDesk Academy`. Uninstalling (Windows Settings > Apps) keeps them, so reinstalling doesn't lose progress.
@@ -193,7 +197,7 @@ The Claude Opus 5.5 requests use Anthropic's server-side refusal fallback (`fall
 
 ## Data and privacy
 
-Everything is stored in `data/db.json` on the server computer: usernames, display names, hashed PINs, and every ticket's conversation and grade. Conversations are sent to the AI service you configured (Anthropic or Groq) to generate replies and grades. Tell students to use made-up details only: no real passwords or personal information. The full [privacy notice](https://amnesia20.github.io/helpdesk-academy/privacy.html) is on the website (source in `docs/`).
+Everything is stored in `data/db.json` on the server computer: usernames, display names, hashed PINs, and every ticket's conversation and grade. Conversations are sent to the AI service you configured (Anthropic or Groq) to generate replies and grades. Tell students to use made-up details only: no real passwords or personal information. The desktop app from GitHub also checks GitHub Releases for updates (nothing about the user is sent). The full [privacy notice](https://amnesia20.github.io/helpdesk-academy/privacy.html) is on the website (source in `docs/`).
 
 To start a new term, stop the server and delete `data/db.json` (back it up first if you want the old results).
 
@@ -225,7 +229,7 @@ Every version goes out in three places: GitHub Releases (the installer), the web
 
 2. **Try it.** `npm run app`, then work a ticket or two.
 
-3. **Build both packages.** This makes `dist\HelpDesk-Academy-Setup-1.0.3.exe` (GitHub) and `dist\HelpDesk-Academy-Store-1.0.3.msix` (Store).
+3. **Build both packages.** This makes `dist\HelpDesk-Academy-Setup-1.0.3.exe` plus its `.blockmap` and `dist\latest.yml` (GitHub), and `dist\HelpDesk-Academy-Store-1.0.3.msix` (Store).
 
    ```powershell
    npm run dist
@@ -247,11 +251,13 @@ Every version goes out in three places: GitHub Releases (the installer), the web
    git push
    ```
 
-6. **Publish the GitHub release.**
+6. **Publish the GitHub release.** Upload all three files: `latest.yml` is how installed copies find the update (without it they never see it), and the `.blockmap` lets the next update download only what changed. Don't delete old releases.
 
    ```powershell
-   gh release create v1.0.3 dist\HelpDesk-Academy-Setup-1.0.3.exe --title "HelpDesk Academy 1.0.3" --notes-file release-notes.md
+   gh release create v1.0.3 dist\HelpDesk-Academy-Setup-1.0.3.exe dist\HelpDesk-Academy-Setup-1.0.3.exe.blockmap dist\latest.yml --title "HelpDesk Academy 1.0.3" --notes-file release-notes.md
    ```
+
+   Installed copies (1.0.3 and later) pick up the release within about 12 hours, or right away with **Help > Check for updates…**.
 
 7. **Update the website.** `npm run site` writes the new version, download links, file size and checksum into `docs/index.html`. Do this after step 6 so the site never links to a release that doesn't exist yet. The site updates about a minute after the push.
 

@@ -47,20 +47,28 @@
 
       <section>
         <h2>Classroom</h2>
-        <label for="classCode">Class code</label>
-        <input id="classCode" type="text" spellcheck="false" maxlength="40" />
-        <p class="hint">Students on other computers type this when they first sign in. It's only asked for when sharing with your network is on.</p>
-
         <label for="instructorPassword">Instructor password</label>
         <div class="row">
-          <input id="instructorPassword" type="text" spellcheck="false" maxlength="100" />
+          <input id="instructorPassword" type="password" autocomplete="off" spellcheck="false" maxlength="100" />
+          <button id="showPassword" type="button" aria-controls="instructorPassword" aria-pressed="false">Show</button>
           <button id="newPassword" type="button">New</button>
         </div>
-        <p class="hint">For the Instructor dashboard (menu: HelpDesk Academy &gt; Instructor dashboard). At least 8 characters.</p>
+        <p class="hint">For the Instructor dashboard (menu: HelpDesk Academy &gt; Instructor dashboard). At least 8 characters. Don't share it with students: it shows everyone's grades and conversations.</p>
 
-        <label class="check"><input id="share" type="checkbox" /> Let students on my network connect</label>
+        <label class="check"><input id="share" type="checkbox" aria-controls="shareFields" /> Let students on my network connect</label>
         <p class="hint">Other computers on the same Wi-Fi can then use the app in a web browser while it's open here. The first time, Windows asks whether to allow HelpDesk Academy through the firewall: choose <b>Allow</b> for private networks.</p>
-        <div id="lan" class="lan"></div>
+        <div id="shareFields" class="share-fields" hidden>
+          <label for="classCode">Class code</label>
+          <input id="classCode" type="text" spellcheck="false" maxlength="40" />
+          <p class="hint">Students type this the first time they sign in from another computer.</p>
+          <div id="lan" class="lan"></div>
+        </div>
+      </section>
+
+      <section id="shortcutSection" hidden>
+        <h2>This computer</h2>
+        <label class="check"><input id="desktopShortcut" type="checkbox" /> Shortcut on my desktop</label>
+        <p id="shortcutHint" class="hint">Adds or removes the HelpDesk Academy icon on your desktop right away.</p>
       </section>
 
       <p id="error" class="error"></p>

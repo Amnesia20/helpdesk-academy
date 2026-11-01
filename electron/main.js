@@ -10,6 +10,7 @@ import net from "node:net";
 import os from "node:os";
 import crypto from "node:crypto";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { setupAutoUpdates, checkForUpdatesNow, updatesSupported } from "./updater.js";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
@@ -141,7 +142,15 @@ async function pickPort(preferred) {
 async function startServer(s) {
   const host = s.SHARE_ON_NETWORK === "1" ? "0.0.0.0" : "127.0.0.1";
   const chosen = await pickPort(Number(s.PORT) || 3310);
-  // Environment variables win over the settings file, so set the runtime ones here.
+  // The settings file is the only source for these. Set them from it on every
+  // start: "Save and restart" launches the new copy with this process's
+  // environment, and the server's .env loader never overwrites a variable that
+  // already exists, so the old key, password or class code would otherwise stick.
+  for (const key of MANAGED) {
+    if (s[key]) process.env[key] = s[key];
+    else delete process.env[key];
+  }
+  // Runtime values (also environment variables, which win over the file).
   process.env.HDA_ENV_FILE = SETTINGS_FILE;
   process.env.DATA_DIR = DATA_DIR;
   process.env.PORT = String(chosen);
@@ -175,7 +184,7 @@ function createMainWindow() {
     icon: ICON,
     show: false,
     backgroundColor: "#0b111c",
-    webPreferences: { contextIsolation: true, sandbox: true, nodeIntegration: false },
+    webPreferences: { contextIsolation: true, sandbox: true, nodeIntegration: false, preload: path.join(HERE, "app-preload.cjs") },
   });
   mainWin.once("ready-to-show", () => mainWin.show());
   // Only the app's own pages load in the window; other links open in the browser.
@@ -271,6 +280,7 @@ function buildMenu() {
         { label: "Get a free Groq AI key", click: () => shell.openExternal("https://console.groq.com/keys") },
         { label: "Get a Claude AI key", click: () => shell.openExternal("https://console.anthropic.com/") },
         { type: "separator" },
+        ...(updatesSupported() ? [{ label: "Check for updates…", click: checkForUpdatesNow }] : []),
         {
           label: "About HelpDesk Academy",
           click: () =>
@@ -285,6 +295,28 @@ function buildMenu() {
     },
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
+
+// ----------------------------------------------------- desktop shortcut ----
+// The GitHub installer offers a desktop shortcut on its last page
+// (build/installer.nsh). The Microsoft Store can't, so Settings has a
+// checkbox for it in both versions.
+const APP_ID = "com.helpdeskacademy.app"; // build.appId in package.json
+const APPX_APP_ID = "HelpDeskAcademy"; // build.appx.applicationId in package.json
+const desktopLink = () => path.join(app.getPath("desktop"), "HelpDesk Academy.lnk");
+
+function shortcutDetails() {
+  if (!app.isPackaged) return null; // running from source: nothing installed to point at
+  const description = "Help desk training with AI callers";
+  if (process.windowsStore) {
+    const parts = path.basename(path.dirname(path.dirname(process.execPath))).split("_");
+    if (parts.length < 5) return null;
+    const aumid = `${parts[0]}_${parts.at(-1)}!${APPX_APP_ID}`;
+    // Store apps are started through the shell, not by running their .exe directly.
+    const explorer = path.join(process.env.SystemRoot || "C:\\Windows", "explorer.exe");
+    return { target: explorer, args: `shell:AppsFolder\\${aumid}`, icon: process.execPath, iconIndex: 0, appUserModelId: aumid, description };
+  }
+  return { target: process.execPath, icon: process.execPath, iconIndex: 0, appUserModelId: APP_ID, description };
 }
 
 // ------------------------------------------------------------------ IPC ----
@@ -310,7 +342,27 @@ ipcMain.handle("settings:get", async (e) => {
     lanUrls: s.SHARE_ON_NETWORK === "1" ? lanUrls() : [],
     aiStatus: status ? { mode: status.aiMode, reason: status.aiReason } : null,
     dataDir: USER_DIR,
+    shortcut: { available: !!shortcutDetails(), exists: fs.existsSync(desktopLink()) },
   };
+});
+
+// Adds or removes the desktop shortcut right away (no restart needed).
+ipcMain.handle("settings:shortcut", async (e, on) => {
+  if (!fromSettingsWindow(e)) return null;
+  const link = desktopLink();
+  try {
+    if (on) {
+      const details = shortcutDetails();
+      if (!details) return { ok: false, exists: fs.existsSync(link), message: "Shortcuts can only be made from the installed app." };
+      if (!shell.writeShortcutLink(link, fs.existsSync(link) ? "replace" : "create", details)) throw new Error("Windows didn't create it");
+    } else {
+      fs.rmSync(link, { force: true });
+    }
+    return { ok: true, exists: fs.existsSync(link) };
+  } catch (err) {
+    console.warn(`[shortcut] ${err.message}`);
+    return { ok: false, exists: fs.existsSync(link), message: `Couldn't change the desktop shortcut (${err.message}).` };
+  }
 });
 
 // Check a key or local server before saving, so mistakes show up right away.
@@ -382,6 +434,32 @@ ipcMain.handle("settings:save", async (e, v) => {
 });
 
 ipcMain.on("settings:close", (e) => fromSettingsWindow(e) && settingsWin.close());
+
+// The Settings button in the app's top bar.
+ipcMain.on("app:open-settings", (e) => {
+  if (mainWin && e.sender === mainWin.webContents && e.sender.getURL().startsWith(appUrl(""))) openSettings();
+});
+
+// "Save as PDF" on a ticket's results page: ask where, then print the page to a PDF.
+const LETTER_PAPER = new Set(["US", "CA", "MX", "PH", "CL", "CO", "VE"]);
+ipcMain.handle("app:save-pdf", async (e, fileName) => {
+  if (!mainWin || e.sender !== mainWin.webContents || !e.sender.getURL().startsWith(appUrl(""))) return null;
+  const base = String(fileName).replace(/[\\/:*?"<>|\r\n\t]+/g, "-").replace(/\s+/g, " ").trim().slice(0, 150) || "HelpDesk Academy report";
+  const { canceled, filePath } = await dialog.showSaveDialog(mainWin, {
+    title: "Save report as PDF",
+    defaultPath: path.join(app.getPath("documents"), base.toLowerCase().endsWith(".pdf") ? base : `${base}.pdf`),
+    filters: [{ name: "PDF", extensions: ["pdf"] }],
+  });
+  if (canceled || !filePath) return { ok: false, canceled: true };
+  try {
+    const pdf = await e.sender.printToPDF({ printBackground: true, pageSize: LETTER_PAPER.has(app.getLocaleCountryCode()) ? "Letter" : "A4" });
+    fs.writeFileSync(filePath, pdf);
+    return { ok: true, path: filePath };
+  } catch (err) {
+    console.warn(`[pdf] ${err.message}`);
+    return { ok: false, message: err.message };
+  }
+});
 ipcMain.on("open-external", (e, url) => {
   const allowed = ["https://console.groq.com/", "https://console.anthropic.com/", "https://ollama.com/"];
   if (fromSettingsWindow(e) && allowed.some((a) => String(url).startsWith(a))) shell.openExternal(url);
@@ -409,4 +487,5 @@ app.whenReady().then(async () => {
   buildMenu();
   createMainWindow();
   if (!aiConfigured(s)) mainWin.once("ready-to-show", () => setTimeout(openSettings, 400));
+  setupAutoUpdates({ getWindow: () => mainWin, beforeInstall: () => flushDb() });
 });

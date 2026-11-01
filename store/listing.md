@@ -50,12 +50,16 @@ Free for personal practice, schools, nonprofits and research. Not for resale.
 ## What's new in this version (max 1,500)
 
 ```
-First Microsoft Store release.
-• AI callers keep their language classroom-safe, even if provoked.
-• Settings fits long folder paths without a sideways scrollbar.
-• Senior Tech replies display cleanly.
-• A selected account's details stay visible below the Admin Center tabs.
+• Hand in your work: results now show your name and the date, and Save as PDF saves the full report, including the call, for an assignment.
+• Settings is now a button in the top bar of every screen.
+• Save and restart now applies a new AI key, instructor password or class code right away.
+• Settings explains why the AI is off, for example when a key is rejected.
+• The instructor password stays hidden until you click Show.
+• The class code only appears when sharing with your network is turned on.
+• New: add or remove a desktop shortcut in Settings > This computer.
 ```
+
+(1.0.2, the first Store release, said: "First Microsoft Store release" plus its fixes.)
 
 ## Product features (up to 20, max 200 characters each)
 

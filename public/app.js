@@ -1,4 +1,4 @@
-import { $, $$, esc, api, md, fmtTime, fmtDateTime, mmss, scoreClass, toast, modal, LOGO } from "./common.js";
+import { $, $$, esc, api, md, fmtTime, fmtDateTime, mmss, scoreClass, toast, modal, LOGO, settingsButton } from "./common.js";
 
 // ------------------------------------------------------------------ state --
 const store = {
@@ -95,6 +95,7 @@ function renderLogin(message = "") {
   app.innerHTML = `
   <div class="login-wrap">
     <div class="card login-card">
+      <div class="login-tools">${settingsButton()}</div>
       <div class="brand">${LOGO}<div>HelpDesk Academy<small>Brightline Logistics IT</small></div></div>
       <h1>Start your shift</h1>
       <p class="muted">New here? Pick a username and a PIN. Your account is created the first time you sign in.</p>
@@ -154,6 +155,7 @@ function appbar(progress) {
         : ""
     }
     <span class="small" style="opacity:.8">${esc(S.me?.displayName || "")}</span>
+    ${settingsButton()}
     <button class="btn sm" data-logout>Sign out</button>
   </header>`;
 }
@@ -172,7 +174,7 @@ function bindAppbar() {
 
 function demoBanner() {
   if (S.status?.aiMode === "live") return "";
-  return `<div class="banner"><strong>Demo mode.</strong><span>The AI is turned off, so callers give placeholder replies and grades are rough estimates. ${esc(S.status?.aiReason || "")}</span></div>`;
+  return `<div class="banner"><strong>Demo mode.</strong><span>The AI is turned off, so callers give placeholder replies and grades are rough estimates. ${esc(S.status?.aiReason || "")}</span>${settingsButton("Open Settings")}</div>`;
 }
 
 // ------------------------------------------------------------------- queue --
@@ -1028,6 +1030,11 @@ async function openResults(id) {
   const g = a.grade;
   const color = g.total >= 80 ? "var(--ok)" : g.total >= 60 ? "var(--warn)" : "var(--danger)";
   document.title = `${g.total}/100 · ${a.lab.title}`;
+  // Who and when, on the score card itself, so a screenshot or PDF handed in
+  // to a teacher shows whose work it is.
+  const studentName = S.me?.displayName || me.student?.displayName || "";
+  const closed = new Date(a.closure.closedAt || g.gradedAt || Date.now());
+  const closedText = closed.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
   const start = new Date(a.startedAt).getTime();
   const who = (e) => (e.type === "student" ? "You" : e.type === "caller" ? a.lab.callerName : e.type === "action" ? "Admin Center" : e.type === "hint" ? "Senior Tech" : "");
   const lineText = (e) => (e.type === "hint" ? `${e.question ? `Q: ${e.question}\n` : ""}${e.answer}` : e.text + (e.secret ? `  [${e.secret}]` : ""));
@@ -1035,12 +1042,14 @@ async function openResults(id) {
   app.innerHTML = `
   ${appbar(me.progress)}
   <main class="results">
+    <p class="print-only report-brand">HelpDesk Academy · Ticket report</p>
     ${g.demo ? demoBanner() : ""}
     <section class="card score-hero">
       <div class="ring" style="--p:${g.total};--c:${color}"><div><b>${g.total}</b><span>out of 100</span></div></div>
       <div>
         <span class="ticket-no">${esc(a.lab.ticket.number)}</span> <span class="pill ${a.lab.difficulty}">${esc(a.lab.difficulty)}</span>
         <h1>${esc(g.verdict)}: ${esc(a.lab.title)}</h1>
+        <p class="report-who"><b>${esc(studentName)}</b> · Closed ${esc(closedText)}</p>
         <p>${esc(g.summary)}</p>
         <p class="muted small" style="margin-top:8px">
           Closed as <b>${a.closure.outcome === "escalated" ? `Escalated to ${esc(a.closure.team)}` : "Resolved"}</b>
@@ -1050,7 +1059,9 @@ async function openResults(id) {
         <div class="actions" style="margin-top:14px">
           <a class="btn primary" href="#/">Back to queue</a>
           <button class="btn" id="retry-btn">Try this ticket again</button>
+          <button class="btn" id="pdf-btn" title="Save this report, with the full call, to hand in">Save as PDF</button>
         </div>
+        <p id="pdf-status" class="muted small" role="status"></p>
       </div>
     </section>
 
@@ -1103,6 +1114,37 @@ async function openResults(id) {
   </main>`;
   bindAppbar();
   $("#retry-btn").addEventListener("click", () => startLab(a.labId, true));
+  const pdfName = [studentName, a.lab.title, closed.toISOString().slice(0, 10)].filter(Boolean).join(" - ");
+  $("#pdf-btn").addEventListener("click", () => saveReportPdf(pdfName));
+}
+
+// The transcript sits in a closed <details>; a report on paper should include it.
+function openDetailsForPrint() {
+  const closedOnes = [...document.querySelectorAll(".results details:not([open])")];
+  closedOnes.forEach((d) => (d.open = true));
+  return () => closedOnes.forEach((d) => (d.open = false));
+}
+let restoreAfterPrint = null;
+window.addEventListener("beforeprint", () => (restoreAfterPrint = openDetailsForPrint()));
+window.addEventListener("afterprint", () => restoreAfterPrint?.());
+
+// Desktop app: a save dialog, then a PDF straight to disk. In a browser (a
+// student joining a shared class): the print window, which has "Save as PDF".
+async function saveReportPdf(fileName) {
+  const btn = $("#pdf-btn");
+  const status = $("#pdf-status");
+  if (!window.hdaDesktop?.savePdf) return window.print();
+  const restore = openDetailsForPrint();
+  btn.disabled = true;
+  status.textContent = "";
+  try {
+    const r = await window.hdaDesktop.savePdf(fileName);
+    if (r?.ok) status.textContent = `Saved: ${r.path}`;
+    else if (r && !r.canceled) status.textContent = `Couldn't save the PDF${r.message ? ` (${r.message})` : ""}.`;
+  } finally {
+    restore();
+    btn.disabled = false;
+  }
 }
 
 boot();

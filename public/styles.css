@@ -36,7 +36,8 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
+/* Dark colors on screen only: printed reports and PDFs always use the light ones. */
+@media screen and (prefers-color-scheme: dark) {
   :root {
     --bg: #0b111c;
     --panel: #121a28;
@@ -167,7 +168,11 @@ label { font-weight: 600; font-size: 13px; color: var(--ink-2); display: block; 
   min-height: 100%; display: grid; grid-template-columns: minmax(320px, 440px) minmax(280px, 460px);
   gap: 40px; align-items: center; justify-content: center; padding: 40px 16px;
 }
-.login-card { padding: 32px; }
+.login-card { padding: 32px; position: relative; }
+.login-tools { position: absolute; top: 16px; right: 16px; }
+.settings-btn { display: inline-flex; align-items: center; gap: 6px; }
+.settings-btn svg { flex: none; }
+.banner .settings-btn { margin-left: auto; flex: none; }
 .login-card h1 { font-size: 22px; margin: 18px 0 6px; }
 .login-card .brand { color: var(--ink); }
 .login-side h2 { font-size: 18px; margin-bottom: 12px; }
@@ -372,6 +377,24 @@ table.mini tr.bad td { color: var(--danger); }
 .transcript .t-time { font-family: var(--mono); color: var(--muted); font-size: 12px; }
 .transcript .t-who { font-weight: 700; font-size: 12.5px; }
 .transcript .t-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.report-who { margin: 2px 0 6px; font-size: 14px; color: var(--muted); }
+.print-only { display: none; }
+.report-brand { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.report-who b { color: var(--ink); }
+
+/* A ticket report on paper or in a PDF (Save as PDF): just the report. */
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff; }
+  .appbar, .results .actions, #pdf-status { display: none !important; }
+  .results { max-width: none; padding: 0; gap: 12px; }
+  .results .score-hero { grid-template-columns: auto 1fr; padding: 18px; }
+  .results .print-only { display: block; }
+  .card { box-shadow: none; break-inside: avoid; }
+  .results > section:last-child { break-inside: auto; }
+  .results details summary { list-style: none; font-weight: 700; }
+  .transcript .t-line { break-inside: avoid; }
+}
 details summary { cursor: pointer; font-weight: 600; }
 
 /* ---------- instructor ---------- */

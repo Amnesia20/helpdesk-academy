@@ -1,4 +1,4 @@
-import { $, $$, esc, api, fmtDateTime, timeAgo, mmss, scoreClass, toast, modal, LOGO } from "./common.js";
+import { $, $$, esc, api, fmtDateTime, timeAgo, mmss, scoreClass, toast, modal, LOGO, settingsButton } from "./common.js";
 
 const session = {
   get() {
@@ -99,10 +99,11 @@ function render() {
     <span class="small" style="opacity:.8">Auto-refreshes every 20s</span>
     <button class="btn sm" id="refresh">Refresh</button>
     <button class="btn sm" id="csv">Export CSV</button>
+    ${settingsButton()}
     <button class="btn sm" id="out">Sign out</button>
   </header>
   <main class="inst">
-    ${d.aiMode !== "live" ? `<div class="banner"><strong>Demo mode.</strong><span>${esc(d.aiReason)} Students can click around, but callers and grades aren't real until the AI is on.</span></div>` : ""}
+    ${d.aiMode !== "live" ? `<div class="banner"><strong>Demo mode.</strong><span>${esc(d.aiReason)} Students can click around, but callers and grades aren't real until the AI is on.</span>${settingsButton("Open Settings")}</div>` : ""}
     <div class="stat-row">
       <div class="card stat-card"><b>${d.students.length}</b><span>Students</span></div>
       <div class="card stat-card"><b>${working}</b><span>Working a ticket now</span></div>

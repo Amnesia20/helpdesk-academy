@@ -1,23 +1,28 @@
 HelpDesk Academy is a help desk training simulator. You work realistic IT support tickets, from easy to hard, with callers played by AI. Look up accounts in an admin console, follow company policy, and get graded by an AI team lead.
 
-## What's new in 1.0.2
+## What's new in 1.0.3
 
-- **Classroom-safe callers:** AI callers keep their language clean even if a student swears at them or asks them to. An abusive student gets an upset-employee reaction (asking for a supervisor, or hanging up) instead.
-- **Settings:** long folder paths wrap instead of adding a sideways scrollbar.
-- **Senior Tech:** replies no longer run two sentences together.
-- **Admin Center:** a selected user's name and details stay visible below the tab bar.
-- Ready for the Microsoft Store. The Store version keeps its own data and, the first time it starts, copies over settings and progress from this GitHub version.
+- **Automatic updates:** from this version on, the app checks for new versions, downloads them in the background, and asks you to restart. Choose **Later** and it updates the next time you close it. **Help > Check for updates…** checks right away. (This is the last update you need to install by hand.)
+- **Settings button at the top:** Settings is now one click away in the top bar of every screen (and on the sign-in page), plus an **Open Settings** button on the demo-mode banner.
+- **Hand in your work:** a ticket's results page now shows your name and the date, and **Save as PDF** saves the whole report, including the full call, to attach to an assignment.
+- **Save and restart applies changes right away.** A new AI key, instructor password or class code used to take effect only after closing and reopening the app.
+- **Settings says why the AI is off**, for example when Groq rejects the saved key.
+- **Instructor password stays hidden** until you click **Show**, so it doesn't end up on a projector while you show students the class code.
+- **The class code appears only when sharing is on**, so people practicing alone don't see a setting they don't need.
+- **Desktop shortcut is your choice:** the installer's last page has a **Create a desktop shortcut** checkbox, and **Settings > This computer** adds or removes it any time (in the Microsoft Store version too).
 
-Installing 1.0.2 over 1.0.1 keeps your settings and student progress.
+HelpDesk Academy is also on the [Microsoft Store](https://apps.microsoft.com/detail/9PL29XFJ4FH8), where it installs without a warning and updates itself.
+
+Installing 1.0.3 over an older version keeps your settings and student progress.
 
 ## Download
 
-**HelpDesk-Academy-Setup-1.0.2.exe** under **Assets** below. Windows 10 or 11, 64-bit, about 118 MB.
+**HelpDesk-Academy-Setup-1.0.3.exe** under **Assets** below. Windows 10 or 11, 64-bit, about 118 MB.
 
 ## Install
 
 1. Run the installer. Windows may say **"Windows protected your PC"** because the installer isn't code-signed yet. Click **More info**, then **Run anyway**.
-2. Read and accept the license, then choose where to install. No admin rights needed.
+2. Read and accept the license, then choose where to install. No admin rights needed. On the last page, choose whether to add a desktop shortcut.
 3. On first launch, **Settings** opens. Choose an AI service:
    - **Groq**: free. Get a key at https://console.groq.com (API Keys, then Create API Key).
    - **Claude**: paid, best quality.
@@ -41,7 +46,7 @@ Free for noncommercial use under the PolyForm Noncommercial License 1.0.0: perso
 
 ## Verify your download
 
-SHA-256 of HelpDesk-Academy-Setup-1.0.2.exe:
+SHA-256 of HelpDesk-Academy-Setup-1.0.3.exe:
 ```
-adc1d1c9a2c76a1b013bc8d94e7896dc634f4d33e70959e0218472a4d18782d2
+316926b7a849c380a3ac540a6857dba95b637650a112b4c9e56cb2f59c9838c2
 ```

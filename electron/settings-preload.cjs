@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld("hda", {
   get: () => ipcRenderer.invoke("settings:get"),
   test: (values) => ipcRenderer.invoke("settings:test", values),
   save: (values) => ipcRenderer.invoke("settings:save", values),
+  shortcut: (on) => ipcRenderer.invoke("settings:shortcut", on),
   close: () => ipcRenderer.send("settings:close"),
   openExternal: (url) => ipcRenderer.send("open-external", url),
 });

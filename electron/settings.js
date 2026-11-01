@@ -23,10 +23,26 @@ function values() {
   };
 }
 
-function newPassword() {
-  const abc = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
-  const bytes = crypto.getRandomValues(new Uint8Array(16));
+function randomString(length, abc) {
+  const bytes = crypto.getRandomValues(new Uint8Array(length));
   return Array.from(bytes, (b) => abc[b % abc.length]).join("");
+}
+const newPassword = () => randomString(16, "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789");
+const newClassCode = () => "HD-" + randomString(6, "ABCDEFGHJKLMNPQRSTUVWXYZ23456789");
+
+// The password stays hidden unless asked for, so it doesn't end up on a
+// projector while the class code is being shown to students.
+function showPassword(show) {
+  $("instructorPassword").type = show ? "text" : "password";
+  $("showPassword").textContent = show ? "Hide" : "Show";
+  $("showPassword").setAttribute("aria-pressed", String(show));
+}
+
+// The class code only matters when other computers can connect.
+function showShareFields() {
+  const on = $("share").checked;
+  $("shareFields").hidden = !on;
+  if (on && !$("classCode").value.trim()) $("classCode").value = newClassCode();
 }
 
 async function load() {
@@ -37,7 +53,9 @@ async function load() {
     st.textContent = "AI is on.";
     st.className = "status live";
   } else {
-    st.textContent = saved.aiStatus ? "AI is off (demo mode). Choose an AI service below to turn it on." : "";
+    // Say why (for example "The Groq key was rejected."), minus the "open Settings" advice.
+    const why = (saved.aiStatus?.reason || "").replace(/\s*Open HelpDesk Academy > Settings to fix it\.?/, "").trim();
+    st.textContent = !saved.aiStatus ? "" : why ? `AI is off (demo mode). ${why}` : "AI is off (demo mode). Choose an AI service below to turn it on.";
     st.className = "status demo";
   }
   const radio = document.querySelector(`input[name=provider][value="${saved.provider}"]`);
@@ -51,7 +69,24 @@ async function load() {
   $("share").checked = saved.share;
   $("lan").textContent = saved.lanUrls.length ? `Students go to: ${saved.lanUrls.join("  or  ")}` : "";
   $("dataDir").textContent = `Data: ${saved.dataDir}`;
+  $("shortcutSection").hidden = !saved.shortcut?.available;
+  $("desktopShortcut").checked = !!saved.shortcut?.exists;
   showFields();
+  showShareFields();
+}
+
+async function setShortcut() {
+  const box = $("desktopShortcut");
+  const hint = $("shortcutHint");
+  box.disabled = true;
+  try {
+    const r = await window.hda.shortcut(box.checked);
+    box.checked = r.exists;
+    hint.textContent = r.ok ? (r.exists ? "Added to your desktop." : "Removed from your desktop.") : r.message;
+    hint.className = r.ok ? "hint" : "hint bad";
+  } finally {
+    box.disabled = false;
+  }
 }
 
 document.querySelectorAll("input[name=provider]").forEach((r) => r.addEventListener("change", showFields));
@@ -61,7 +96,13 @@ document.querySelectorAll("[data-link]").forEach((a) =>
     window.hda.openExternal(a.dataset.link);
   }),
 );
-$("newPassword").addEventListener("click", () => ($("instructorPassword").value = newPassword()));
+$("showPassword").addEventListener("click", () => showPassword($("instructorPassword").type === "password"));
+$("newPassword").addEventListener("click", () => {
+  $("instructorPassword").value = newPassword();
+  showPassword(true); // a new password is only useful if you can read it
+});
+$("share").addEventListener("change", showShareFields);
+$("desktopShortcut").addEventListener("change", setShortcut);
 $("cancelBtn").addEventListener("click", () => window.hda.close());
 
 $("testBtn").addEventListener("click", async () => {

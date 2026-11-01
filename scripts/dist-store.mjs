@@ -28,6 +28,6 @@ if (!env.ELECTRON_BUILDER_WINDOWS_KITS_PATH) {
 }
 
 const cli = path.join(root, "node_modules", "electron-builder", "cli.js");
-const args = [cli, "--win", "appx", "--x64", "-c.toolsets.winCodeSign=1.1.0", ...process.argv.slice(2)];
+const args = [cli, "--win", "appx", "--x64", "--publish", "never", "-c.toolsets.winCodeSign=1.1.0", ...process.argv.slice(2)];
 const r = spawnSync(process.execPath, args, { cwd: root, env, stdio: "inherit" });
 process.exit(r.status ?? 1);
