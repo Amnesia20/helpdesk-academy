@@ -22,17 +22,20 @@ const mb = Math.round(bytes.length / 1024 / 1024);
 const page = path.join(root, "docs", "index.html");
 let html = fs.readFileSync(page, "utf8");
 const V = String.raw`\d+\.\d+\.\d+`;
+// [label, pattern, replacement, optional]
 const changes = [
   ["download links", new RegExp(String.raw`releases/download/v${V}/`, "g"), `releases/download/v${version}/`],
   ["file names", new RegExp(String.raw`HelpDesk-Academy-Setup-${V}\.exe`, "g"), file],
+  ["Linux file names", new RegExp(String.raw`HelpDesk-Academy-${V}-Linux\.`, "g"), `HelpDesk-Academy-${version}-Linux.`, true],
   ["version text", new RegExp(String.raw`Version ${V}\b`, "g"), `Version ${version}`],
   ["checksum label", new RegExp(String.raw`checksum of the ${V} installer`, "g"), `checksum of the ${version} installer`],
   ["checksum", /<code class="hash">[0-9a-f]{64}<\/code>/g, `<code class="hash">${sha256}</code>`],
   ["file size", /\b\d{2,4} MB\b/g, `${mb} MB`],
 ];
 
-for (const [label, pattern, value] of changes) {
+for (const [label, pattern, value, optional] of changes) {
   const count = (html.match(pattern) || []).length;
+  if (!count && optional) continue;
   if (!count) {
     console.error(`Couldn't find the ${label} in docs/index.html. Update it by hand.`);
     process.exit(1);
@@ -42,5 +45,10 @@ for (const [label, pattern, value] of changes) {
 }
 
 fs.writeFileSync(page, html);
+for (const ext of ["AppImage", "deb"]) {
+  if (html.includes(`-Linux.${ext}`) && !fs.existsSync(path.join(root, "dist", `HelpDesk-Academy-${version}-Linux.${ext}`))) {
+    console.warn(`Note: the site links to HelpDesk-Academy-${version}-Linux.${ext}, but it isn't in dist\\. Build it (wsl -d Ubuntu -- bash scripts/build-linux-wsl.sh) and upload it with the release.`);
+  }
+}
 console.log(`\ndocs/index.html now offers ${file} (${mb} MB).`);
 console.log(`SHA-256 for the release notes:\n${sha256}`);

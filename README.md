@@ -89,7 +89,7 @@ npm run dist
 
 The installer appears at `dist\HelpDesk-Academy-Setup-<version>.exe` (about 120 MB, version from `package.json`). Give that one file to anyone who should have the app. Running a newer installer over an existing install updates it and keeps its settings.
 
-**Updates:** from version 1.0.3 the installed app updates itself (`electron/updater.js`, using electron-updater). Shortly after it starts, and twice a day while open, it checks the latest GitHub release for `latest.yml`, downloads a newer installer in the background, and asks to restart (**Later** installs it when the app closes). **Help > Check for updates…** checks right away. The Microsoft Store version and `npm run app` don't use this.
+**Updates:** from version 1.0.3 the installed app updates itself (`electron/updater.js`, using electron-updater). Shortly after it starts, and twice a day while open, it checks the latest GitHub release for `latest.yml`, downloads a newer installer in the background, and asks to restart (**Later** installs it when the app closes). **Help > Check for updates…** checks right away. The Linux AppImage does the same with `latest-linux.yml`. The Microsoft Store version, the Linux .deb and `npm run app` don't use this.
 
 **Installing:** run the installer and pick a folder. It installs just for that Windows user, so it doesn't need admin rights. The installer isn't code-signed, so Windows may show **"Windows protected your PC"**: click **More info**, then **Run anyway**. (Removing that warning requires buying a code-signing certificate.)
 
@@ -111,6 +111,16 @@ The installer appears at `dist\HelpDesk-Academy-Setup-<version>.exe` (about 120 
 - The `appx` section of `package.json` must hold the three values from Partner Center > Product management > Product identity: `identityName` (Package/Identity/Name), `publisher` (Package/Identity/Publisher) and `publisherDisplayName` (Package/Properties/PublisherDisplayName).
 - The Store tile images are generated from `build/icon.svg` into `build/appx/` by `scripts/make-appx-assets.mjs`.
 - The Store version keeps its settings and data in its package folder (`%LOCALAPPDATA%\Packages\<package>\LocalState\HelpDesk Academy`), which Windows deletes on uninstall. On first start it copies settings and progress from `%APPDATA%\HelpDesk Academy` if the GitHub version was used on that PC.
+
+### Linux (AppImage and .deb)
+
+Same app and same version number as Windows; Settings and About show which kind of copy it is (for example "Version 1.0.4 · Linux (AppImage)").
+
+- **AppImage** (almost any 64-bit Linux): mark it as executable, then open it. It updates itself like the Windows version. If it won't start, install `libfuse2` (`libfuse2t64` on Ubuntu 24.04 and newer).
+- **.deb** (Ubuntu, Debian, Linux Mint): `sudo apt install ./HelpDesk-Academy-<version>-Linux.deb` adds it to the apps menu. Install a newer .deb the same way to update.
+- Settings and student progress live in `~/.config/HelpDesk Academy`.
+
+**Building on Windows:** Linux packages have to be built on Linux, so `scripts/build-linux-wsl.sh` does it inside WSL (Ubuntu): `wsl -d Ubuntu -- bash scripts/build-linux-wsl.sh` from this folder. It downloads its own Node.js into `~/.local/node` (no admin rights), builds a copy of the project in `~/hda-build` (without `node_modules`, `dist`, `data` or `.env`), and copies the AppImage, .deb and `latest-linux.yml` into `dist\`. On a Linux PC, `npm run dist:linux` does the same directly. To try the app inside WSL, Ubuntu needs `libnss3`, `libasound2t64` and `libfuse2t64`.
 
 ### Put it online from your PC (Tailscale Funnel)
 
@@ -229,17 +239,18 @@ Every version goes out in three places: GitHub Releases (the installer), the web
 
 2. **Try it.** `npm run app`, then work a ticket or two.
 
-3. **Build both packages.** This makes `dist\HelpDesk-Academy-Setup-1.0.3.exe` plus its `.blockmap` and `dist\latest.yml` (GitHub), and `dist\HelpDesk-Academy-Store-1.0.3.msix` (Store).
+3. **Build all the packages.** This makes `dist\HelpDesk-Academy-Setup-1.0.3.exe` plus its `.blockmap` and `dist\latest.yml` (Windows, GitHub), `dist\HelpDesk-Academy-Store-1.0.3.msix` (Store), and `dist\HelpDesk-Academy-1.0.3-Linux.AppImage`, `.deb` and `dist\latest-linux.yml` (Linux, built inside WSL; see [Linux](#linux-appimage-and-deb)).
 
    ```powershell
    npm run dist
    npm run dist:store
+   wsl -d Ubuntu -- bash scripts/build-linux-wsl.sh
    ```
 
-4. **Write the release notes** in `release-notes.md`: update "What's new", the version numbers, and the SHA-256 checksum at the bottom. This prints the checksum:
+4. **Write the release notes** in `release-notes.md`: update "What's new", the version numbers, and the SHA-256 checksums at the bottom. This prints them:
 
    ```powershell
-   (Get-FileHash dist\HelpDesk-Academy-Setup-1.0.3.exe).Hash.ToLower()
+   Get-FileHash dist\HelpDesk-Academy-Setup-1.0.3.exe, dist\HelpDesk-Academy-1.0.3-Linux.AppImage, dist\HelpDesk-Academy-1.0.3-Linux.deb | ForEach-Object { "$($_.Hash.ToLower())  $(Split-Path $_.Path -Leaf)" }
    ```
 
 5. **Commit and push.** Check `git status` first so nothing unexpected goes in.
@@ -251,10 +262,10 @@ Every version goes out in three places: GitHub Releases (the installer), the web
    git push
    ```
 
-6. **Publish the GitHub release.** Upload all three files: `latest.yml` is how installed copies find the update (without it they never see it), and the `.blockmap` lets the next update download only what changed. Don't delete old releases.
+6. **Publish the GitHub release.** Upload all six files: `latest.yml` (Windows) and `latest-linux.yml` (AppImage) are how installed copies find the update (without them they never see it), and the `.blockmap` lets the next Windows update download only what changed. Don't delete old releases.
 
    ```powershell
-   gh release create v1.0.3 dist\HelpDesk-Academy-Setup-1.0.3.exe dist\HelpDesk-Academy-Setup-1.0.3.exe.blockmap dist\latest.yml --title "HelpDesk Academy 1.0.3" --notes-file release-notes.md
+   gh release create v1.0.3 dist\HelpDesk-Academy-Setup-1.0.3.exe dist\HelpDesk-Academy-Setup-1.0.3.exe.blockmap dist\latest.yml dist\HelpDesk-Academy-1.0.3-Linux.AppImage dist\HelpDesk-Academy-1.0.3-Linux.deb dist\latest-linux.yml --title "HelpDesk Academy 1.0.3" --notes-file release-notes.md
    ```
 
    Installed copies (1.0.3 and later) pick up the release within about 12 hours, or right away with **Help > Check for updates…**.

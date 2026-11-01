@@ -1,9 +1,11 @@
 {
   "name": "helpdesk-academy",
   "productName": "HelpDesk Academy",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Help desk training simulator: students work realistic support tickets against AI-played callers, from easy to hard.",
   "author": "Levi M Wright",
+  "homepage": "https://amnesia20.github.io/helpdesk-academy/",
+  "desktopName": "helpdesk-academy.desktop",
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
@@ -13,6 +15,7 @@
     "icon": "node scripts/make-icon.mjs",
     "dist": "node scripts/prepare-build.mjs && electron-builder --win --publish never",
     "dist:store": "node scripts/prepare-build.mjs && node scripts/dist-store.mjs",
+    "dist:linux": "node scripts/prepare-build.mjs && electron-builder --linux --publish never",
     "site": "node scripts/update-site.mjs"
   },
   "license": "PolyForm-Noncommercial-1.0.0",
@@ -70,6 +73,36 @@
       "artifactName": "HelpDesk-Academy-Setup-${version}.exe",
       "deleteAppDataOnUninstall": false,
       "license": "build/license.txt"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "category": "Education",
+      "synopsis": "Help desk training simulator with AI callers",
+      "maintainer": "Levi M Wright <49747321+Amnesia20@users.noreply.github.com>",
+      "vendor": "Levi M Wright",
+      "artifactName": "HelpDesk-Academy-${version}-Linux.${ext}",
+      "syncDesktopName": true,
+      "desktop": {
+        "entry": {
+          "Name": "HelpDesk Academy",
+          "Comment": "Help desk training with AI callers",
+          "Keywords": "helpdesk;IT;support;training;simulator;"
+        }
+      }
     },
     "appx": {
       "identityName": "0xNull.HelpDeskAcademy",

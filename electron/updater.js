@@ -1,8 +1,9 @@
-// Automatic updates for the GitHub download. (The Microsoft Store updates its
+// Automatic updates for the GitHub downloads. (The Microsoft Store updates its
 // own copy, and running from source has nothing to update.)
 //
 // A little after start, and twice a day while open, the app looks for a newer
-// release on GitHub (latest.yml next to the installer) and downloads it in the
+// release on GitHub (latest.yml for Windows, latest-linux.yml for the AppImage,
+// both uploaded with each release) and downloads it in the
 // background. Then it offers "Restart now" or "Later"; with Later, the update
 // installs the next time the app closes, so a class in progress isn't cut off.
 import { app, dialog } from "electron";
@@ -10,7 +11,10 @@ import updaterPkg from "electron-updater";
 
 let autoUpdater = null; // created only in the GitHub build (see setupAutoUpdates)
 
-export const updatesSupported = () => app.isPackaged && !process.windowsStore && process.platform === "win32";
+// The Windows installer from GitHub, and the Linux AppImage (it can replace its
+// own file). The .deb and the Store version update through their own channels.
+export const updatesSupported = () =>
+  app.isPackaged && ((process.platform === "win32" && !process.windowsStore) || (process.platform === "linux" && !!process.env.APPIMAGE));
 
 let state = "idle"; // idle | checking | downloading | ready
 let readyVersion = null;

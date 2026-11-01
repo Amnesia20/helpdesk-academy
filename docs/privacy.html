@@ -58,6 +58,7 @@
     <p>All of it stays on the computer that runs HelpDesk Academy:</p>
     <ul>
       <li><strong>Desktop app from GitHub:</strong> the <code>%APPDATA%\HelpDesk Academy</code> folder in your Windows profile.</li>
+      <li><strong>Linux (AppImage or .deb):</strong> the <code>~/.config/HelpDesk Academy</code> folder in your home folder.</li>
       <li><strong>Desktop app from the Microsoft Store:</strong> the app's own folder that Windows manages, under <code>%LOCALAPPDATA%\Packages</code>. The menu item <strong>Open data folder</strong> opens it. If the GitHub version was used on the same PC before, its settings and progress are copied into this folder the first time the Store version starts.</li>
       <li><strong>Run from the source code:</strong> the <code>data</code> folder next to the code, or the folder set in <code>DATA_DIR</code>.</li>
     </ul>
@@ -77,7 +78,7 @@
     <h3>Links</h3>
     <p>Links in the app, like "Get a free key", open in your web browser.</p>
     <h3>Update checks (GitHub version)</h3>
-    <p>The desktop app from GitHub (version 1.0.3 and later) checks GitHub for a newer version shortly after it starts and twice a day while it's open, and downloads the new version from GitHub when there is one. Like any download, this lets GitHub see your computer's IP address; see the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a>. Nothing about you, your students or your work is sent. The Microsoft Store version gets its updates through the Microsoft Store instead.</p>
+    <p>The Windows app from GitHub (version 1.0.3 and later) and the Linux AppImage check GitHub for a newer version shortly after it starts and twice a day while it's open, and downloads the new version from GitHub when there is one. Like any download, this lets GitHub see your computer's IP address; see the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a>. Nothing about you, your students or your work is sent. The Microsoft Store version gets its updates through the Microsoft Store instead, and the Linux .deb doesn't check.</p>
     <h3>Nothing else</h3>
     <p>The app doesn't send crash reports, usage statistics, or anything else.</p>
 
@@ -95,6 +96,7 @@
       <li><strong>One student:</strong> the instructor can delete a student from the instructor dashboard.</li>
       <li><strong>Desktop app from GitHub:</strong> uninstalling keeps your progress so a reinstall doesn't lose it. To remove everything, uninstall the app, then delete the <code>%APPDATA%\HelpDesk Academy</code> folder.</li>
       <li><strong>Desktop app from the Microsoft Store:</strong> uninstalling it deletes its folder, including settings and progress.</li>
+      <li><strong>Linux:</strong> delete the AppImage file (or uninstall the .deb), then delete the <code>~/.config/HelpDesk Academy</code> folder.</li>
       <li><strong>Run from the source code:</strong> stop the server and delete <code>data/db.json</code>.</li>
       <li><strong>The AI service:</strong> what it keeps is covered by that service's own policy.</li>
     </ul>

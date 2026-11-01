@@ -68,7 +68,10 @@ async function load() {
   $("instructorPassword").value = saved.instructorPassword;
   $("share").checked = saved.share;
   $("lan").textContent = saved.lanUrls.length ? `Students go to: ${saved.lanUrls.join("  or  ")}` : "";
-  $("dataDir").textContent = `Data: ${saved.dataDir}`;
+  $("dataDir").textContent = `${saved.version ? `${saved.version} · ` : ""}Data: ${saved.dataDir}`;
+  if (saved.platform === "linux") {
+    $("firewallHint").textContent = "If this computer has a firewall turned on (for example ufw), allow incoming connections on the port in the address shown below.";
+  }
   $("shortcutSection").hidden = !saved.shortcut?.available;
   $("desktopShortcut").checked = !!saved.shortcut?.exists;
   showFields();

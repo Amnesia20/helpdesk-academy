@@ -287,8 +287,8 @@ function buildMenu() {
             dialog.showMessageBox(mainWin, {
               type: "info",
               title: "About",
-              message: `HelpDesk Academy ${app.getVersion()}`,
-              detail: `Help desk training with AI callers.\n\nSettings and data: ${USER_DIR}`,
+              message: "HelpDesk Academy",
+              detail: `${versionLabel()}\n\nHelp desk training with AI callers.\n\nSettings and data: ${USER_DIR}`,
             }),
         },
       ],
@@ -296,6 +296,18 @@ function buildMenu() {
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
+
+// Which kind of copy this is, shown next to the version (About, Settings) so
+// it's easy to tell apart when someone asks for help. Same version number on
+// every platform.
+function platformLabel() {
+  if (process.windowsStore) return "Microsoft Store";
+  if (process.platform === "win32") return "Windows";
+  if (process.platform === "linux") return process.env.APPIMAGE ? "Linux (AppImage)" : "Linux";
+  if (process.platform === "darwin") return "Mac";
+  return process.platform;
+}
+const versionLabel = () => `Version ${app.getVersion()} · ${platformLabel()}${app.isPackaged ? "" : " (from source)"}`;
 
 // ----------------------------------------------------- desktop shortcut ----
 // The GitHub installer offers a desktop shortcut on its last page
@@ -307,6 +319,7 @@ const desktopLink = () => path.join(app.getPath("desktop"), "HelpDesk Academy.ln
 
 function shortcutDetails() {
   if (!app.isPackaged) return null; // running from source: nothing installed to point at
+  if (process.platform !== "win32") return null; // Linux: the .deb adds a menu entry instead
   const description = "Help desk training with AI callers";
   if (process.windowsStore) {
     const parts = path.basename(path.dirname(path.dirname(process.execPath))).split("_");
@@ -343,6 +356,8 @@ ipcMain.handle("settings:get", async (e) => {
     aiStatus: status ? { mode: status.aiMode, reason: status.aiReason } : null,
     dataDir: USER_DIR,
     shortcut: { available: !!shortcutDetails(), exists: fs.existsSync(desktopLink()) },
+    version: versionLabel(),
+    platform: process.platform,
   };
 });
 

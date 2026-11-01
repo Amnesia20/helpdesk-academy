@@ -1,41 +1,48 @@
 HelpDesk Academy is a help desk training simulator. You work realistic IT support tickets, from easy to hard, with callers played by AI. Look up accounts in an admin console, follow company policy, and get graded by an AI team lead.
 
-## What's new in 1.0.3
+## What's new in 1.0.4
 
-- **Automatic updates:** from this version on, the app checks for new versions, downloads them in the background, and asks you to restart. Choose **Later** and it updates the next time you close it. **Help > Check for updates…** checks right away. (This is the last update you need to install by hand.)
-- **Settings button at the top:** Settings is now one click away in the top bar of every screen (and on the sign-in page), plus an **Open Settings** button on the demo-mode banner.
-- **Hand in your work:** a ticket's results page now shows your name and the date, and **Save as PDF** saves the whole report, including the full call, to attach to an assignment.
-- **Save and restart applies changes right away.** A new AI key, instructor password or class code used to take effect only after closing and reopening the app.
-- **Settings says why the AI is off**, for example when Groq rejects the saved key.
-- **Instructor password stays hidden** until you click **Show**, so it doesn't end up on a projector while you show students the class code.
-- **The class code appears only when sharing is on**, so people practicing alone don't see a setting they don't need.
-- **Desktop shortcut is your choice:** the installer's last page has a **Create a desktop shortcut** checkbox, and **Settings > This computer** adds or removes it any time (in the Microsoft Store version too).
+- **Now on Linux:** an **AppImage** for almost any 64-bit Linux, and a **.deb** for Ubuntu, Debian and Linux Mint. Same app, same version number as Windows.
+- **Which copy is this?** Settings and **Help > About** now show the version and the kind of copy, for example "Version 1.0.4 · Windows", "Version 1.0.4 · Microsoft Store" or "Version 1.0.4 · Linux (AppImage)". Handy when asking for help.
 
-HelpDesk Academy is also on the [Microsoft Store](https://apps.microsoft.com/detail/9PL29XFJ4FH8), where it installs without a warning and updates itself.
-
-Installing 1.0.3 over an older version keeps your settings and student progress.
+Windows copies from 1.0.3 on update themselves; installing 1.0.4 over an older version keeps your settings and student progress. HelpDesk Academy is also on the [Microsoft Store](https://apps.microsoft.com/detail/9PL29XFJ4FH8), where it installs without a warning and updates itself.
 
 ## Download
 
-**HelpDesk-Academy-Setup-1.0.3.exe** under **Assets** below. Windows 10 or 11, 64-bit, about 118 MB.
+Under **Assets** below:
+
+| Your computer | File |
+|---|---|
+| Windows 10 or 11 (64-bit) | **HelpDesk-Academy-Setup-1.0.4.exe** (about 118 MB) |
+| Linux, almost any (64-bit) | **HelpDesk-Academy-1.0.4-Linux.AppImage** |
+| Ubuntu, Debian, Linux Mint (64-bit) | **HelpDesk-Academy-1.0.4-Linux.deb** |
 
 ## Install
 
+**Windows**
+
 1. Run the installer. Windows may say **"Windows protected your PC"** because the installer isn't code-signed yet. Click **More info**, then **Run anyway**.
 2. Read and accept the license, then choose where to install. No admin rights needed. On the last page, choose whether to add a desktop shortcut.
-3. On first launch, **Settings** opens. Choose an AI service:
-   - **Groq**: free. Get a key at https://console.groq.com (API Keys, then Create API Key).
-   - **Claude**: paid, best quality.
-   - **Ollama**: free and runs on your own computer (needs a strong graphics card).
 
-   Click **Test connection**, then **Save and restart**.
+**Linux**
+
+- **AppImage:** allow it to run as a program (right-click, Properties, or `chmod +x HelpDesk-Academy-1.0.4-Linux.AppImage`), then open it. It updates itself. If it won't start, install `libfuse2` (`libfuse2t64` on Ubuntu 24.04 and newer).
+- **.deb:** `sudo apt install ./HelpDesk-Academy-1.0.4-Linux.deb`, then open **HelpDesk Academy** from your apps menu. To update, install the newer .deb the same way.
+
+**Then, on every computer:** the first time it starts, **Settings** opens. Choose an AI service:
+
+- **Groq**: free. Get a key at https://console.groq.com (API Keys, then Create API Key).
+- **Claude**: paid, best quality.
+- **Ollama**: free and runs on your own computer (needs a strong graphics card).
+
+Click **Test connection**, then **Save and restart**.
 
 ## What's inside
 
 - 16 help desk labs: account lockouts, printers, Wi-Fi, DNS, MFA, BitLocker, phishing, social engineering, VIP emergencies and more
 - AI callers with their own personalities, moods and screens you can't see
 - A simulated admin console, a knowledge base, and a Senior Tech who gives hints
-- AI grading on troubleshooting, resolution, security, communication and documentation
+- AI grading on troubleshooting, resolution, security, communication and documentation, with a **Save as PDF** report to hand in
 - An instructor dashboard, and optional sharing with students on your network
 
 Private by default: only the person at the computer can use it until sharing is turned on in Settings.
@@ -46,7 +53,9 @@ Free for noncommercial use under the PolyForm Noncommercial License 1.0.0: perso
 
 ## Verify your download
 
-SHA-256 of HelpDesk-Academy-Setup-1.0.3.exe:
+SHA-256 checksums:
 ```
-316926b7a849c380a3ac540a6857dba95b637650a112b4c9e56cb2f59c9838c2
+e14018d4b6bafa0458fad3f62d7a12d70b050df4381ffe352d74176b70170de4  HelpDesk-Academy-Setup-1.0.4.exe
+499d5e0e6d5a8d8f61e3fc6417380a6f0d89e85095020b768f37f2c1d9abc078  HelpDesk-Academy-1.0.4-Linux.AppImage
+effa8ba11aea1e374fdffcae3e76ddfe9f3288d0e4670f7b398fa02498ad1c04  HelpDesk-Academy-1.0.4-Linux.deb
 ```
