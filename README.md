@@ -4,7 +4,46 @@ A help desk training simulator. Students sign in from their own computers, pick 
 
 All tickets take place at **Brightline Logistics**, a fictional 800-person company. Every person, phone number, and address in it is made up.
 
-**Get the Windows app:** [Microsoft Store](https://apps.microsoft.com/detail/9PL29XFJ4FH8) (no warning, updates itself) or the installer on the [website](https://amnesia20.github.io/helpdesk-academy/)
+## Download
+
+Just want to use it? Install the app. You don't need anything else from this page.
+
+| Your computer | Get it |
+|---|---|
+| **Windows 10 or 11** | **[Microsoft Store](https://apps.microsoft.com/detail/9PL29XFJ4FH8)** (recommended: installs without a warning and updates itself) |
+| Windows 10 or 11 | The installer (`HelpDesk-Academy-Setup-….exe`) from the [latest release](https://github.com/Amnesia20/helpdesk-academy/releases/latest). It updates itself. Windows may say "Windows protected your PC" because it isn't code-signed: click **More info**, then **Run anyway**. |
+| **Linux** | From the [latest release](https://github.com/Amnesia20/helpdesk-academy/releases/latest): the **AppImage** for almost any 64-bit Linux (updates itself), or the **.deb** for Ubuntu, Debian and Linux Mint. |
+| Mac | Not available yet. You can [run it from the source code](#run-from-the-source-code-developers-and-self-hosting). |
+
+Screenshots, install steps and a FAQ are on the **[website](https://amnesia20.github.io/helpdesk-academy/)**.
+
+## Getting started
+
+1. **Open the app.** The first time, **Settings** opens by itself.
+2. **Choose an AI service** (it plays the callers and grades your work):
+   - **Groq:** free. Sign up at <https://console.groq.com>, choose **API Keys**, then **Create API Key**, and paste it in.
+   - **Claude:** paid, best quality. Needs prepaid credit at <https://console.anthropic.com>.
+   - **Ollama:** free and runs on your own computer, but needs a strong graphics card.
+
+   Click **Test connection**, then **Save and restart**.
+3. **Sign in** with a username and a 4 to 8 digit PIN (your account is created the first time), then start with an Easy ticket.
+
+No AI key yet? The app still opens in **demo mode**, so you can look around; callers give placeholder replies until an AI service is set up. You can open **Settings** any time with the button in the top bar (or Ctrl+,).
+
+## Using it with a class
+
+There are two ways.
+
+**Students practice on their own (simplest).** Each student installs the app and uses their own free Groq key, at home or in class. When they finish a ticket, the results page shows their name, the date and their score, and **Save as PDF** saves the whole report, including the call, to hand in with an assignment.
+
+**Run the class from your computer.** In **Settings**, tick **Let students on my network connect**. Students on the same Wi-Fi open the address shown there in any web browser (nothing to install) and type the class code. The first time, your computer asks about the firewall: allow it on private networks. Open **HelpDesk Academy > Instructor dashboard** (Ctrl+2) and sign in with the instructor password from Settings to see:
+
+- Every student's rank, XP, labs completed, average score, and what they're working on right now.
+- A per-lab table with average scores per category, so you can see which skills the class needs more practice on.
+- Every attempt's full timeline: conversation, console actions, hints, notes, the grade, and an instructor-only panel explaining what was really going on.
+- **Export CSV** of all graded attempts, and buttons to reset a student's PIN or delete a student.
+
+In this mode every student uses your AI key. Groq's free tier only handles a few students at a time, so for a full class use Claude or Ollama.
 
 ## What students do
 
@@ -26,7 +65,7 @@ All tickets take place at **Brightline Logistics**, a fictional 800-person compa
    | Documentation | 15 | Notes the next tech could act on |
 
    A **critical failure** (for example resetting the CFO's password for an unverified caller) caps the score at 40. Each hint used subtracts 3 points (max 15).
-6. **Hand it in** (optional): the results page shows the student's name and the date, and **Save as PDF** saves the whole report with the full call, ready to attach to an assignment. Students can practice at home with their own free AI key and send the PDF or a screenshot to their teacher.
+6. **Hand it in** (optional): the results page shows the student's name and the date, and **Save as PDF** saves the whole report with the full call, ready to attach to an assignment.
 
 XP = best score × difficulty (1×/2×/3×). Ranks go Trainee → Tier 1 Technician → Senior Tier 1 → Tier 2 Technician → Help Desk Lead.
 
@@ -51,13 +90,34 @@ XP = best score × difficulty (1×/2×/3×). Ranks go Trainee → Tier 1 Technic
 | Hard | No Network at the New Desk | Physical-layer isolation and an escalation another team can act on |
 | Hard | Boardroom in 10 Minutes | VIP pressure, three problems in a row, when policy *doesn't* apply |
 
-## Setup (Windows)
+## About the desktop app
+
+- **Menu > HelpDesk Academy:** Student practice (Ctrl+1), Instructor dashboard (Ctrl+2), Settings (Ctrl+,), Let students connect, Open data folder. The **Settings** button in the top bar only appears in the app's own window, not to students joining from a browser.
+- **Private by default:** only the person at that computer can use it, and no class code is asked for, until **Let students on my network connect** is turned on.
+- **Which copy is this?** Settings and **Help > About** show the version and the kind of copy, for example "Version 1.0.4 · Windows", "· Microsoft Store" or "· Linux (AppImage)". Every platform uses the same version number.
+- **Updates:** the Microsoft Store version updates through the Store. The Windows installer from GitHub (1.0.3 and later) and the Linux AppImage check GitHub shortly after they start and twice a day, download a new version in the background, and ask to restart (**Later** installs it when the app closes). **Help > Check for updates…** checks right away. The Linux .deb updates by installing the newer .deb.
+- **Where your data lives** (settings, student progress and a log file):
+
+  | Copy | Folder | When you uninstall |
+  |---|---|---|
+  | Windows installer from GitHub | `%APPDATA%\HelpDesk Academy` | Kept, so reinstalling doesn't lose progress |
+  | Microsoft Store | Its own package folder (**Open data folder** in the menu) | Deleted |
+  | Linux | `~/.config/HelpDesk Academy` | Kept |
+
+  The first time the Store version starts on a PC that had the GitHub version, it copies over that version's settings and progress.
+- **Desktop shortcut:** the Windows installer's last page has a **Create a desktop shortcut** checkbox, and **Settings > This computer** adds or removes it any time (Windows and Microsoft Store versions).
+
+---
+
+## Run from the source code (developers and self-hosting)
+
+You only need this to change the app, to run it on a Mac, or to host it as a website that students open in a browser from anywhere (on a server or a computer that stays on). Everyone else can use the [downloads](#download) above.
 
 1. Install **Node.js 22 or newer** from <https://nodejs.org>.
 2. In this folder, copy `.env.example` to `.env` and add **one** AI key:
    - **Free:** a Groq key from <https://console.groq.com> after `GROQ_API_KEY=`. Fine for testing and small groups; it has per-minute limits.
    - **Paid, best quality:** an Anthropic key from <https://console.anthropic.com> after `ANTHROPIC_API_KEY=`.
-3. Double-click **`start.bat`**, or run:
+3. Double-click **`start.bat`** (Windows), or run:
 
    ```bash
    npm install
@@ -76,51 +136,7 @@ The server window prints everything you need:
 
 Without an AI key it still starts, in **demo mode**: you can click through everything, but callers give placeholder replies and grades are rough estimates from the objective checks.
 
-### Desktop app (Windows installer)
-
-HelpDesk Academy also comes as a normal Windows program: an installer, a Start-menu shortcut (and a desktop one if you tick the box on the installer's last page or in Settings), its own window, and a **Settings** screen for the AI key, class code, and instructor password. The person installing it doesn't need Node.js or any files to edit.
-
-**Build the installer** (on Windows, from this folder):
-
-```powershell
-npm install
-npm run dist
-```
-
-The installer appears at `dist\HelpDesk-Academy-Setup-<version>.exe` (about 120 MB, version from `package.json`). Give that one file to anyone who should have the app. Running a newer installer over an existing install updates it and keeps its settings.
-
-**Updates:** from version 1.0.3 the installed app updates itself (`electron/updater.js`, using electron-updater). Shortly after it starts, and twice a day while open, it checks the latest GitHub release for `latest.yml`, downloads a newer installer in the background, and asks to restart (**Later** installs it when the app closes). **Help > Check for updates…** checks right away. The Linux AppImage does the same with `latest-linux.yml`. The Microsoft Store version, the Linux .deb and `npm run app` don't use this.
-
-**Installing:** run the installer and pick a folder. It installs just for that Windows user, so it doesn't need admin rights. The installer isn't code-signed, so Windows may show **"Windows protected your PC"**: click **More info**, then **Run anyway**. (Removing that warning requires buying a code-signing certificate.)
-
-**First launch:** Settings opens automatically. Pick an AI service (free Groq key, paid Claude key, or Ollama on the same computer), click **Test connection**, then **Save and restart**.
-
-**In the app:**
-- **Settings** button in the top bar (and on the sign-in page), shown only in the app's own window, not to students joining from a browser.
-- **Menu > HelpDesk Academy:** Student practice (Ctrl+1), Instructor dashboard (Ctrl+2), Settings (Ctrl+,), Let students connect, Open data folder.
-- By default only the person at that computer can use it, and no class code is asked for. Turn on **Let students on my network connect** in Settings to let other computers on the same Wi-Fi join in a browser. They'll need the class code. Windows asks once about the firewall: choose Allow.
-- Settings, student progress and a log file live in `%APPDATA%\HelpDesk Academy`. Uninstalling (Windows Settings > Apps) keeps them, so reinstalling doesn't lose progress.
-
-**Try it without building:** `npm run app` starts the desktop app straight from the source code.
-
-### Microsoft Store package (MSIX)
-
-`npm run dist:store` builds `dist\HelpDesk-Academy-Store-<version>.msix` to upload in Partner Center. Microsoft signs it during certification, so Store users get no Windows warning.
-
-- It needs the free [Windows SDK](https://developer.microsoft.com/windows/downloads/windows-sdk/) for `makeappx.exe` (electron-builder's own copy doesn't start on recent Windows). `scripts/dist-store.mjs` finds the newest installed SDK automatically.
-- The `appx` section of `package.json` must hold the three values from Partner Center > Product management > Product identity: `identityName` (Package/Identity/Name), `publisher` (Package/Identity/Publisher) and `publisherDisplayName` (Package/Properties/PublisherDisplayName).
-- The Store tile images are generated from `build/icon.svg` into `build/appx/` by `scripts/make-appx-assets.mjs`.
-- The Store version keeps its settings and data in its package folder (`%LOCALAPPDATA%\Packages\<package>\LocalState\HelpDesk Academy`), which Windows deletes on uninstall. On first start it copies settings and progress from `%APPDATA%\HelpDesk Academy` if the GitHub version was used on that PC.
-
-### Linux (AppImage and .deb)
-
-Same app and same version number as Windows; Settings and About show which kind of copy it is (for example "Version 1.0.4 · Linux (AppImage)").
-
-- **AppImage** (almost any 64-bit Linux): mark it as executable, then open it. It updates itself like the Windows version. If it won't start, install `libfuse2` (`libfuse2t64` on Ubuntu 24.04 and newer).
-- **.deb** (Ubuntu, Debian, Linux Mint): `sudo apt install ./HelpDesk-Academy-<version>-Linux.deb` adds it to the apps menu. Install a newer .deb the same way to update.
-- Settings and student progress live in `~/.config/HelpDesk Academy`.
-
-**Building on Windows:** Linux packages have to be built on Linux, so `scripts/build-linux-wsl.sh` does it inside WSL (Ubuntu): `wsl -d Ubuntu -- bash scripts/build-linux-wsl.sh` from this folder. It downloads its own Node.js into `~/.local/node` (no admin rights), builds a copy of the project in `~/hda-build` (without `node_modules`, `dist`, `data` or `.env`), and copies the AppImage, .deb and `latest-linux.yml` into `dist\`. On a Linux PC, `npm run dist:linux` does the same directly. To try the app inside WSL, Ubuntu needs `libnss3`, `libasound2t64` and `libfuse2t64`.
+To run the desktop app (with its window and Settings screen) from the source code instead, use `npm run app`.
 
 ### Put it online from your PC (Tailscale Funnel)
 
@@ -164,21 +180,9 @@ New-NetFirewallRule -DisplayName "HelpDesk Academy" -Direction Inbound -Protocol
 
 Set `CLASS_CODE` in `.env` if you want only your class to be able to join.
 
-### Accounts
+Students pick a username and a 4-8 digit PIN the first time they sign in; that creates their account. If someone forgets their PIN, reset it from the instructor dashboard at `/instructor`. Sign in there with the instructor password (set `INSTRUCTOR_PASSWORD` in `.env`, or use the generated one saved in `data/instructor-password.txt`).
 
-Students pick a username and a 4-8 digit PIN the first time they sign in; that creates their account. If someone forgets their PIN, reset it from the instructor dashboard.
-
-## Instructor dashboard
-
-Go to `/instructor` and sign in with the instructor password (set `INSTRUCTOR_PASSWORD` in `.env`, or use the generated one saved in `data/instructor-password.txt`). You get:
-
-- Every student's rank, XP, labs completed, average score, and what they're working on right now.
-- A per-lab table with average scores per category, so you can see which skills the class needs more practice on.
-- Every attempt's full timeline: conversation, console actions, hints, notes, the grade, and an instructor-only panel explaining what was really going on.
-- **Export CSV** of all graded attempts.
-- Reset a student's PIN, or delete a student.
-
-## Configuration (`.env`)
+### Configuration (`.env`)
 
 | Setting | Default | Notes |
 |---|---|---|
@@ -205,11 +209,9 @@ The Claude Opus 5.5 requests use Anthropic's server-side refusal fallback (`fall
 
 **Groq's free tier** allows about 30 requests and 8,000 tokens per minute *per model*. The app rotates through the listed models (by default all three free Groq chat models) when one is rate limited, uses Groq's automatic prompt caching (cached tokens don't count against the limit), and tells students how long to wait when everything is busy. Expect it to handle a few students at a time.
 
-## Data and privacy
+### Data
 
-Everything is stored in `data/db.json` on the server computer: usernames, display names, hashed PINs, and every ticket's conversation and grade. Conversations are sent to the AI service you configured (Anthropic or Groq) to generate replies and grades. Tell students to use made-up details only: no real passwords or personal information. The desktop app from GitHub also checks GitHub Releases for updates (nothing about the user is sent). The full [privacy notice](https://amnesia20.github.io/helpdesk-academy/privacy.html) is on the website (source in `docs/`).
-
-To start a new term, stop the server and delete `data/db.json` (back it up first if you want the old results).
+Running from the source code, everything is stored in `data/db.json` (or the folder set in `DATA_DIR`): usernames, display names, hashed PINs, and every ticket's conversation and grade. To start a new term, stop the server and delete `data/db.json` (back it up first if you want the old results).
 
 ## Writing your own labs
 
@@ -227,9 +229,39 @@ Labs live in `labs/easy.js`, `labs/medium.js`, and `labs/hard.js`. Copy an exist
 
 The fictional company directory (people, groups, devices) is in `labs/directory.js`, and the knowledge base is in `labs/kb.js`. Restart the server after editing.
 
+## Building the apps (developers)
+
+### Windows installer
+
+On Windows, from this folder:
+
+```powershell
+npm install
+npm run dist
+```
+
+The installer appears at `dist\HelpDesk-Academy-Setup-<version>.exe` (about 120 MB, version from `package.json`), with its `.blockmap` and `latest.yml` for automatic updates. It installs just for the current Windows user (no admin rights), shows the license, and offers a desktop shortcut on its last page (`build/installer.nsh`). Running a newer installer over an existing install updates it and keeps its settings. Removing the "Windows protected your PC" warning requires buying a code-signing certificate.
+
+Automatic updates live in `electron/updater.js` (electron-updater, reading `latest.yml` / `latest-linux.yml` from the latest GitHub release).
+
+### Microsoft Store package (MSIX)
+
+`npm run dist:store` builds `dist\HelpDesk-Academy-Store-<version>.msix` to upload in Partner Center. Microsoft signs it during certification, so Store users get no Windows warning.
+
+- It needs the free [Windows SDK](https://developer.microsoft.com/windows/downloads/windows-sdk/) for `makeappx.exe` (electron-builder's own copy doesn't start on recent Windows). `scripts/dist-store.mjs` finds the newest installed SDK automatically.
+- The `appx` section of `package.json` must hold the three values from Partner Center > Product management > Product identity: `identityName` (Package/Identity/Name), `publisher` (Package/Identity/Publisher) and `publisherDisplayName` (Package/Properties/PublisherDisplayName).
+- The Store tile images are generated from `build/icon.svg` into `build/appx/` by `scripts/make-appx-assets.mjs`.
+- The Store version keeps its settings and data in its package folder (`%LOCALAPPDATA%\Packages\<package>\LocalState\HelpDesk Academy`), which Windows deletes on uninstall.
+
+### Linux (AppImage and .deb)
+
+Linux packages have to be built on Linux, so `scripts/build-linux-wsl.sh` does it inside WSL (Ubuntu): `wsl -d Ubuntu -- bash scripts/build-linux-wsl.sh` from this folder. It downloads its own Node.js into `~/.local/node` (no admin rights), builds a copy of the project in `~/hda-build` (without `node_modules`, `dist`, `data` or `.env`), and copies `HelpDesk-Academy-<version>-Linux.AppImage`, `.deb` and `latest-linux.yml` into `dist\`. On a Linux PC, `npm run dist:linux` does the same directly.
+
+To try the app inside WSL, Ubuntu needs `libnss3`, `libasound2t64` and `libfuse2t64`. AppImage users on other PCs may need `libfuse2` (`libfuse2t64` on Ubuntu 24.04 and newer); the .deb installs with `sudo apt install ./HelpDesk-Academy-<version>-Linux.deb`.
+
 ## Releasing a new version
 
-Every version goes out in three places: GitHub Releases (the installer), the website, and the Microsoft Store. The commands use PowerShell in this folder and the [GitHub CLI](https://cli.github.com/) (`gh`).
+Every version goes out in three places: GitHub Releases (the Windows and Linux downloads), the website, and the Microsoft Store. The commands use PowerShell in this folder and the [GitHub CLI](https://cli.github.com/) (`gh`).
 
 1. **Bump the version.** Use the next number: `1.0.3` for fixes, `1.1.0` for new labs or features. The Store refuses a package whose version isn't higher than the last one.
 
@@ -278,11 +310,15 @@ Every version goes out in three places: GitHub Releases (the installer), the web
    git push
    ```
 
-8. **Submit to the Microsoft Store.** In Partner Center, open HelpDesk Academy and choose **Start update**. Then:
+8. **Submit to the Microsoft Store** (skip it when nothing changed for Windows users). In Partner Center, open HelpDesk Academy and choose **Start update**. Then:
    - **Packages:** upload the new `.msix` and remove the old one.
    - **Store listings > English:** update **What's new in this version** (and the screenshots if the screens changed). Keep `store/listing.md` in sync.
    - **Submission options > Notes for certification:** the testers need a working AI key, and the last one was deleted. Create a new Groq key called "Microsoft review" at [console.groq.com/keys](https://console.groq.com/keys) and paste it in place of the old key.
    - **Submit.** Review usually takes one to three days. Store users get the update automatically. Delete the "Microsoft review" key once it's approved.
+
+## Data and privacy
+
+The app keeps everything on the computer that runs it: usernames, display names, hashed PINs, and every ticket's conversation and grade (see [where your data lives](#about-the-desktop-app)). Conversations are sent only to the AI service you chose, to write the caller's replies and the grade. Tell students to use made-up details only: no real passwords or personal information. The Windows installer from GitHub and the Linux AppImage also check GitHub Releases for updates (nothing about the user is sent). The full [privacy notice](https://amnesia20.github.io/helpdesk-academy/privacy.html) is on the website (source in `docs/`).
 
 ## Project layout
 
@@ -290,18 +326,18 @@ Every version goes out in three places: GitHub Releases (the installer), the web
 server.js          Web server and API
 src/ai.js          AI roles (caller, mentor, grader) and demo mode
 src/openai-compat.js  Groq / OpenAI-compatible client with model rotation
-deploy/oracle/     Free cloud hosting: setup.sh (server), upload.ps1 (your PC), guide
-deploy/windows/    Auto-start at login: install-autostart.ps1, run-server.ps1, stop-server.ps1
-electron/          Desktop app: main.js (window, menus, embedded server), Settings window
-build/, scripts/   App icon (icon.svg -> icon.png via scripts/make-icon.mjs), build and release helpers
-store/             Microsoft Store listing text, screenshots and logos
-release-notes.md   Notes for the latest GitHub release (edit for each new version)
 src/prompts.js     The prompts for each AI role
 src/console.js     Simulated admin console actions
 src/db.js          JSON-file storage
 labs/              Labs, company directory, knowledge base
 public/            Student app (index.html, app.js) and instructor dashboard
+electron/          Desktop app: main.js (window, menus, embedded server), Settings window, updater
+build/, scripts/   App icon, installer page, build and release helpers (Store, Linux in WSL, website update)
+deploy/oracle/     Free cloud hosting: setup.sh (server), upload.ps1 (your PC), guide
+deploy/windows/    Auto-start at login: install-autostart.ps1, run-server.ps1, stop-server.ps1
 docs/              The website (GitHub Pages): download page and privacy notice
+store/             Microsoft Store listing text, screenshots and logos
+release-notes.md   Notes for the latest GitHub release (edit for each new version)
 ```
 
 ## License
